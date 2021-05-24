@@ -16,9 +16,25 @@ import ForumScreen from "./app/screens/ForumScreen";
 import ReviewScreen from "./app/screens/ReviewScreen";
 import UploadScreen from "./app/screens/UploadScreen";
 // import SettingsScreen from "./app/screens/SettingsScreen";
+import LoginScreen from ".app/src/login/login";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+
+export default class App extends React.Component {
+  render() {
+    return <LoginScreen />;
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
 
 // Logo title for the top left of every screen
 function LogoTitle() {
