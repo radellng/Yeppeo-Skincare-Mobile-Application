@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./app/assets/yeppeo_icon.png",
     "splash": {
-      "image": "./app/assets/yeppeo_icon.png",
+      "image": "./app/assets/yeppeo_splash.png",
       "height": 50,
       "width": 50,
       "backgroundColor": "#ffffff"
