@@ -30,9 +30,12 @@ export default class LoginScreen extends Component {
                 style={styles.loginFormTextInput}
                 secureTextEntry={true}
               />
+
               <Button
                 buttonStyle={styles.loginButton}
-                onPress={() => this.onLoginPress()}
+                onPress={() => {
+                  onSignIn().then(() => navigation.navigate("SignedIn"));
+                }}
                 title="Login"
               />
               <Button
@@ -46,9 +49,9 @@ export default class LoginScreen extends Component {
       </KeyboardAvoidingView>
     );
   }
-  onLoginPress() {
-    console.log("login button pressed");
-  }
+  // onLoginPress() {
+  //   console.log("login button pressed");
+  // }
 
   onSignupPress() {
     console.log("signup button pressed");

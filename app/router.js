@@ -16,24 +16,24 @@ import ForumScreen from "./screens/ForumScreen";
 import ReviewScreen from "./screens/ReviewScreen";
 import UploadScreen from "./screens/UploadScreen";
 // import SettingsScreen from "./screens/SettingsScreen";
-import LoginScreen from "./src/login/login";
+// import LoginScreen from "./src/login/login";
 
-const headerStyle = {
-  marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-};
+// const headerStyle = {
+//   marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+// };
 
-export const SignedOut = createStackNavigator({
-  SignIn: {
-    screen: LoginScreen,
-    navigationOptions: {
-      title: "Sign In",
-      headerStyle,
-    },
-  },
-});
+// export const SignedOut = createStackNavigator({
+//   SignIn: {
+//     screen: LoginScreen,
+//     navigationOptions: {
+//       title: "Sign In",
+//       headerStyle,
+//     },
+//   },
+// });
 
 const SignedInStack = createStackNavigator();
-const SignedInTab = createBottomTabNavigator();
+export const SignedInTab = createBottomTabNavigator();
 
 // Logo title for the top left of HomeScreen
 function LogoTitle() {
@@ -114,7 +114,7 @@ function ProfileStack() {
   );
 }
 
-function SignedIn() {
+export function SignedIn() {
   return (
     <NavigationContainer>
       <SignedInTab.Navigator
@@ -182,20 +182,18 @@ function SignedIn() {
   );
 }
 
-export default SignedInTab;
-
-export const createRootNavigator = (signedIn = true) => {
-  return createSwitchNavigator(
-    {
-      SignedIn: {
-        screen: SignedInTab,
-      },
-      SignedOut: {
-        screen: SignedOut,
-      },
-    },
-    {
-      initialRouteName: signedIn ? "SignedIn" : "SignedOut",
-    }
-  );
-};
+// export const createRootNavigator = (signedIn = false) => {
+//   return createSwitchNavigator(
+//     {
+//       SignedIn: {
+//         screen: SignedInTab,
+//       },
+//       SignedOut: {
+//         screen: SignedOut,
+//       },
+//     },
+//     {
+//       initialRouteName: signedIn ? "SignedIn" : "SignedOut",
+//     }
+//   );
+// };

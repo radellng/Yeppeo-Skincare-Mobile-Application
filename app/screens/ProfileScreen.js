@@ -5,6 +5,7 @@ import {
   View,
   Text,
   SafeAreaView,
+  Button,
 } from "react-native";
 
 const ProfileScreen = ({ route, navigation }) => {
@@ -27,6 +28,13 @@ const ProfileScreen = ({ route, navigation }) => {
           >
             You are on Profile Screen
           </Text>
+          <Button
+            backgroundColor="#03A9F4"
+            title="SIGN OUT"
+            // onPress={() =>
+            //   onSignOut().then(() => navigation.navigate("SignedOut"))
+            // }
+          />
         </View>
       </View>
     </SafeAreaView>
