@@ -25,8 +25,9 @@ const UploadScreen = ({ route, navigation }) => {
               marginBottom: 16,
             }}
           >
-            You are on Upload Screen
+            Upload a picture to get started!
           </Text>
+          {/* <Image source={require("")}/>  */}
         </View>
       </View>
     </SafeAreaView>

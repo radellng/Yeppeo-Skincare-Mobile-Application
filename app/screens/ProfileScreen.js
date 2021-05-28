@@ -1,4 +1,6 @@
 import * as React from "react";
+// import auth from "@react-native-firebase/auth";
+import { auth } from "../firebase";
 import {
   TouchableOpacity,
   StyleSheet,
@@ -29,11 +31,11 @@ const ProfileScreen = ({ route, navigation }) => {
             You are on Profile Screen
           </Text>
           <Button
-            backgroundColor="#03A9F4"
+            backgroundColor="#ff0000"
             title="SIGN OUT"
-            // onPress={() =>
-            //   onSignOut().then(() => navigation.navigate("SignedOut"))
-            // }
+            onPress={() =>
+              auth.signOut().then(() => console.log("User signed out!"))
+            }
           />
         </View>
       </View>

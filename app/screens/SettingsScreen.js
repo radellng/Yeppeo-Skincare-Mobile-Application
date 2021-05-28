@@ -25,7 +25,7 @@ const SettingsScreen = ({ route, navigation }) => {
               marginBottom: 16,
             }}
           >
-            You are on Settings Screen
+            This is the settings screen.
           </Text>
         </View>
       </View>
