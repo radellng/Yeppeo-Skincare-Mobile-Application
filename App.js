@@ -15,8 +15,8 @@ import ProfileScreen from "./app/screens/ProfileScreen";
 import ForumScreen from "./app/screens/ForumScreen";
 import SearchScreen from "./app/screens/SearchScreen";
 import UploadScreen from "./app/screens/UploadScreen";
-import SettingsScreen from "./app/screens/SettingsScreen";
-import LoginScreen from "./app/screens/SignInScreen";
+import FirstScreen from "./app/screens/FirstScreen";
+import SignInScreen from "./app/screens/SignInScreen";
 import RegisterScreen from "./app/screens/SignUpScreen";
 
 const Stack = createStackNavigator();
@@ -142,29 +142,24 @@ export default function App() {
           <StatusBar style="light" />
           <Stack.Navigator mode="card" screenOptions={{}}>
             <Stack.Screen
-              name="signIn"
-              component={LoginScreen}
+              name="first"
+              component={FirstScreen}
               options={{
-                title: "Sign in",
-                headerStyle: {
-                  backgroundColor: "#29434e",
-                  borderBottomColor: "#29434e",
-                },
-                cardStyleInterpolator: forFade,
-                headerTintColor: "#fff",
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="signin"
+              component={SignInScreen}
+              options={{
+                headerShown: false,
               }}
             />
             <Stack.Screen
               name="register"
               component={RegisterScreen}
               options={{
-                title: "Register",
-                headerStyle: {
-                  backgroundColor: "#29434e",
-                  borderBottomColor: "#29434e",
-                },
-                cardStyleInterpolator: forFade,
-                headerTintColor: "#fff",
+                headerShown: false,
               }}
             />
           </Stack.Navigator>
