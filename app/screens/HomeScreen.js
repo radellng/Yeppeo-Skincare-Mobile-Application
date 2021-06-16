@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import {
   TouchableOpacity,
   StyleSheet,
@@ -6,8 +6,11 @@ import {
   Text,
   Image,
   SafeAreaView,
+  ScrollView,
 } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
+import * as Firebase from "firebase";
+import { storage } from "../firebase";
 
 // Logo title for the top left of HomeScreen
 function LogoTitle() {
@@ -34,16 +37,51 @@ function HomeScreen() {
 }
 
 const HomeStackScreen = ({ route, navigation }) => {
+  var user = Firebase.auth().currentUser;
+  console.log(user.uid);
+  var storageRef = Firebase.storage().ref("images/" + String(user.uid) + "/");
+  var [imageUrl, setImageUrl] = useState([]);
+
+  // useEffect(() => {
+  //   storageRef
+  //     .listAll()
+  //     .then(function (result) {
+  //       result.items.forEach(function (imageRef) {
+  //         imageRef
+  //           .getDownloadURL()
+  //           .then(function (url) {
+  //             imageUrl.push(url);
+  //             setImageUrl(imageUrl);
+  //           })
+  //           .catch(function (error) {
+  //             // Handle any errors
+  //           });
+  //       });
+  //     })
+  //     .catch((e) => console.log("Errors while downloading => ", e));
+  // }, []);
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      let result = await storageRef.listAll();
+      let urlPromises = result.items.map((imageRef) =>
+        imageRef.getDownloadURL()
+      );
+
+      return Promise.all(urlPromises);
+    };
+
+    const loadImages = async () => {
+      const urls = await fetchImages();
+      setImageUrl(urls);
+    };
+    loadImages();
+  }, []);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1, padding: 16 }}>
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+      <ScrollView>
+        <View style={{ flex: 1, padding: 16 }}>
           <Text
             style={{
               fontSize: 25,
@@ -51,30 +89,53 @@ const HomeStackScreen = ({ route, navigation }) => {
               marginBottom: 16,
             }}
           >
-            You are on Home Screen
+            Your journey so far...
           </Text>
+          <View
+            style={{
+              flex: 1,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {imageUrl.reverse().map((url, index) => (
+              <Image
+                key={index}
+                style={{ height: 200, width: 200, top: 20 }}
+                source={{ uri: url }}
+              />
+            ))}
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  button: {
-    alignItems: "center",
-    backgroundColor: "#DDDDDD",
-    padding: 10,
-    width: 300,
-    marginTop: 16,
-  },
-  title: {
-    justifyContent: "center",
-    width: 100,
-    height: 100,
-    position: "absolute",
-    top: 0,
-    left: 10,
-  },
-});
+// function HomeStackScreen(route, navigation) {
+//   return (
+//     <SafeAreaView style={{ flex: 1 }}>
+//       <View style={{ flex: 1, padding: 16 }}>
+//         <View
+//           style={{
+//             flex: 1,
+//             alignItems: "center",
+//             justifyContent: "center",
+//           }}
+//         >
+//           <Text
+//             style={{
+//               fontSize: 25,
+//               textAlign: "center",
+//               marginBottom: 16,
+//             }}
+//           >
+//             You are on Home Screen
+//           </Text>
+//         </View>
+//       </View>
+//     </SafeAreaView>
+//   );
+// }
 
 export default HomeScreen;
