@@ -42,25 +42,6 @@ const HomeStackScreen = ({ route, navigation }) => {
   var storageRef = Firebase.storage().ref("images/" + String(user.uid) + "/");
   var [imageUrl, setImageUrl] = useState([]);
 
-  // useEffect(() => {
-  //   storageRef
-  //     .listAll()
-  //     .then(function (result) {
-  //       result.items.forEach(function (imageRef) {
-  //         imageRef
-  //           .getDownloadURL()
-  //           .then(function (url) {
-  //             imageUrl.push(url);
-  //             setImageUrl(imageUrl);
-  //           })
-  //           .catch(function (error) {
-  //             // Handle any errors
-  //           });
-  //       });
-  //     })
-  //     .catch((e) => console.log("Errors while downloading => ", e));
-  // }, []);
-
   useEffect(() => {
     const fetchImages = async () => {
       let result = await storageRef.listAll();
@@ -98,6 +79,9 @@ const HomeStackScreen = ({ route, navigation }) => {
               justifyContent: "center",
             }}
           >
+            {/* {imageUrl.reverse().forEach((url, index) => (
+              <Image key={index}/>
+            ))} */}
             {imageUrl.reverse().map((url, index) => (
               <Image
                 key={index}
@@ -111,31 +95,5 @@ const HomeStackScreen = ({ route, navigation }) => {
     </SafeAreaView>
   );
 };
-
-// function HomeStackScreen(route, navigation) {
-//   return (
-//     <SafeAreaView style={{ flex: 1 }}>
-//       <View style={{ flex: 1, padding: 16 }}>
-//         <View
-//           style={{
-//             flex: 1,
-//             alignItems: "center",
-//             justifyContent: "center",
-//           }}
-//         >
-//           <Text
-//             style={{
-//               fontSize: 25,
-//               textAlign: "center",
-//               marginBottom: 16,
-//             }}
-//           >
-//             You are on Home Screen
-//           </Text>
-//         </View>
-//       </View>
-//     </SafeAreaView>
-//   );
-// }
 
 export default HomeScreen;
