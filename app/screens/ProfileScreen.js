@@ -1,118 +1,225 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { auth } from "../firebase";
 import {
-  TouchableOpacity,
-  StyleSheet,
+  Button,
   View,
   Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
   SafeAreaView,
-  Button,
 } from "react-native";
 import { Card } from "react-native-elements";
 import { createStackNavigator } from "@react-navigation/stack";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import * as Firebase from "firebase";
 
-const ProfileStack = createStackNavigator();
+// const ProfileStack = createStackNavigator();
+
+// const ProfileScreen = ({ route, navigation }) => {
+//   return (
+//     <ProfileStack.Navigator initialRouteName="Profile">
+//       <ProfileStack.Screen
+//         name="Profile"
+//         component={ProfileStackScreen}
+//         options={{
+//           headerRight: () => (
+//             <TouchableOpacity
+//               style={styles.button}
+//               onPress={() => navigation.navigate("Settings")}
+//             >
+//               <MaterialIcons name="settings" size={30} />
+//             </TouchableOpacity>
+//           ),
+//         }}
+//       />
+//       <ProfileStack.Screen name="Settings" component={SettingsStackScreen} />
+//     </ProfileStack.Navigator>
+//   );
+// };
 
 const ProfileScreen = ({ route, navigation }) => {
+  var user = Firebase.auth().currentUser;
+  // console.log(user.uid);
+  var imageRef = Firebase.storage().ref(
+    "images/" + String(user.uid) + "/profilePic/pic"
+  );
+
+  var [imageUrl, setImageUrl] = useState(
+    "https://firebasestorage.googleapis.com/v0/b/yeppeo-469e9.appspot.com/o/images%2Fdefault%20profile%20pic.jpg?alt=media&token=ea5b3733-83b8-441b-bc51-2e8192d19fb1"
+  );
+  var [username, setUsername] = useState("");
+
+  // imageRef.getDownloadURL().then((url) => {
+  //   setImageUrl(url);
+  // });
+
+  useEffect(() => {
+    Firebase.firestore()
+      .collection("Users")
+      .doc(String(user.uid))
+      .onSnapshot((doc) => {
+        console.log("Current data: ", doc.data());
+        if (doc.exists) {
+          let data = doc.data();
+          return setUsername(data.username);
+        } else {
+          return console.log("No data found");
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    const loadImages = async () => {
+      let url = await imageRef.getDownloadURL();
+      setImageUrl(url);
+    };
+    loadImages();
+  }, [imageUrl]);
+
+  // useEffect(() => {
+  //   imageRef.getDownloadURL().then((url) => {
+  //     setImageUrl(url);
+  //   });
+  // }, []);
+
+  // useEffect(() => {
+  //   imageRef
+  //     .getDownloadURL()
+  //     .then((url) => {
+  //       setImageUrl(url);
+  //     })
+  //     .catch((e) => console.log("Errors while downloading => ", e));
+  // }, []);
+
+  // console.log(username);
   return (
-    <ProfileStack.Navigator initialRouteName="Profile">
-      <ProfileStack.Screen
-        name="Profile"
-        component={ProfileStackScreen}
-        options={{
-          headerRight: () => (
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => navigation.navigate("Settings")}
-            >
-              <MaterialIcons name="settings" size={30} />
-            </TouchableOpacity>
-          ),
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#f2f2f2" }}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{
+          justifyContent: "center",
+          alignItems: "center",
         }}
-      />
-      <ProfileStack.Screen name="Settings" component={SettingsStackScreen} />
-    </ProfileStack.Navigator>
-  );
-};
+      >
+        <Image style={styles.userImg} source={{ uri: imageUrl }} />
+        <Text style={styles.userName}>{username}</Text>
+        <Text style={styles.aboutUser}>About User</Text>
 
-const ProfileStackScreen = ({ route, navigation }) => {
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1, padding: 16 }}>
-        <Card title="User">
-          <Text
-            style={{
-              textAlign: "center",
-              color: "black",
-              fontSize: 26,
-            }}
-          >
-            Your name here
-          </Text>
-          <View
-            style={{
-              backgroundColor: "#bcbec1",
-              alignItems: "center",
-              justifyContent: "center",
-              width: 80,
-              height: 80,
-              borderRadius: 40,
-              alignSelf: "center",
-              marginBottom: 20,
-            }}
-          >
-            <Text style={{ color: "white", fontSize: 28 }}>User</Text>
-          </View>
-          <Button
-            style={styles.button}
-            backgroundColor="#ff0000"
-            title="SIGN OUT"
-            onPress={() =>
-              auth.signOut().then(() => console.log("User signed out!"))
-            }
-          />
-        </Card>
-      </View>
-    </SafeAreaView>
-  );
-};
-
-const SettingsStackScreen = ({ route, navigation }) => {
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1, padding: 16 }}>
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 25,
-              textAlign: "center",
-              marginBottom: 16,
-            }}
-          >
-            You are on Settings Screen.
-          </Text>
+        <View style={styles.userBtnWrapper}>
+          <>
+            <TouchableOpacity
+              style={styles.userBtn}
+              onPress={() => {
+                navigation.navigate("EditProfile");
+              }}
+            >
+              <Text style={styles.userBtnTxt}>Edit</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.userBtn}
+              onPress={() =>
+                auth.signOut().then(() => console.log("User signed out!"))
+              }
+            >
+              <Text style={styles.userBtnTxt}>Logout</Text>
+            </TouchableOpacity>
+          </>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  button: {
-    flex: 1,
-    alignItems: "center",
-    backgroundColor: "#ffffff",
-    padding: 10,
-    width: 50,
-    marginTop: 5,
-  },
-});
+// const SettingsStackScreen = ({ route, navigation }) => {
+//   return (
+//     <SafeAreaView style={{ flex: 1 }}>
+//       <View style={{ flex: 1, padding: 16 }}>
+//         <View
+//           style={{
+//             flex: 1,
+//             alignItems: "center",
+//             justifyContent: "center",
+//           }}
+//         >
+//           <Text
+//             style={{
+//               fontSize: 25,
+//               textAlign: "center",
+//               marginBottom: 16,
+//             }}
+//           >
+//             You are on Settings Screen.
+//           </Text>
+//         </View>
+//       </View>
+//     </SafeAreaView>
+//   );
+// };
 
 export default ProfileScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    padding: 20,
+  },
+  userImg: {
+    height: 150,
+    width: 150,
+    borderRadius: 75,
+    justifyContent: "center",
+  },
+  userName: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  aboutUser: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: "#666",
+    textAlign: "center",
+    marginBottom: 10,
+  },
+  userBtnWrapper: {
+    flexDirection: "row",
+    justifyContent: "center",
+    width: "100%",
+    marginBottom: 10,
+  },
+  userBtn: {
+    borderColor: "#2e64e5",
+    borderWidth: 2,
+    borderRadius: 3,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    marginHorizontal: 5,
+  },
+  userBtnTxt: {
+    color: "#2e64e5",
+  },
+  userInfoWrapper: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
+    marginVertical: 20,
+  },
+  userInfoItem: {
+    justifyContent: "center",
+  },
+  userInfoTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 5,
+    textAlign: "center",
+  },
+  userInfoSubTitle: {
+    fontSize: 12,
+    color: "#666",
+    textAlign: "center",
+  },
+});

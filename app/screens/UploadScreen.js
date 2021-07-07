@@ -14,11 +14,11 @@ import * as ImagePicker from "expo-image-picker";
 import * as Firebase from "firebase";
 import * as Progress from "react-native-progress";
 
-import { firebaseConfig } from "../firebase";
+import { firebaseConfig, db } from "../firebase";
 
 const UploadScreen = ({ route, navigation }) => {
   const user = Firebase.auth().currentUser;
-  console.log(user.uid);
+  // console.log(user.uid);
   if (!Firebase.apps.length) {
     Firebase.initializeApp(firebaseConfig);
   }

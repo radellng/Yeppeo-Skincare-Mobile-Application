@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as Firebase from "firebase";
-import { storage } from "../firebase";
 
 // Logo title for the top left of HomeScreen
 function LogoTitle() {
@@ -38,7 +37,7 @@ function HomeScreen() {
 
 const HomeStackScreen = ({ route, navigation }) => {
   var user = Firebase.auth().currentUser;
-  console.log(user.uid);
+  // console.log(user.uid);
   var storageRef = Firebase.storage().ref("images/" + String(user.uid) + "/");
   var [imageUrl, setImageUrl] = useState([]);
 
@@ -57,12 +56,18 @@ const HomeStackScreen = ({ route, navigation }) => {
       setImageUrl(urls);
     };
     loadImages();
-  }, []);
+  }, [imageUrl]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>
-        <View style={{ flex: 1, padding: 16 }}>
+        <View
+          style={{
+            flex: 1,
+            padding: 16,
+            alignContent: "center",
+          }}
+        >
           <Text
             style={{
               fontSize: 25,
@@ -70,24 +75,42 @@ const HomeStackScreen = ({ route, navigation }) => {
               marginBottom: 16,
             }}
           >
-            Your journey so far...
+            Skincare Diary
           </Text>
           <View
             style={{
               flex: 1,
+              // flexDirection: "row",
               alignItems: "center",
-              justifyContent: "center",
             }}
           >
             {/* {imageUrl.reverse().forEach((url, index) => (
-              <Image key={index}/>
-            ))} */}
-            {imageUrl.reverse().map((url, index) => (
               <Image
                 key={index}
                 style={{ height: 200, width: 200, top: 20 }}
                 source={{ uri: url }}
               />
+            ))} */}
+            {imageUrl.reverse().map((url, index) => (
+              <View
+                key={index}
+                style={{
+                  justifyContent: "space-between",
+                  padding: 10,
+                  // borderWidth: 1,
+                  // borderColor: "ff0000",
+                }}
+              >
+                <Image
+                  key={index}
+                  style={{
+                    height: 200,
+                    width: 200,
+                    top: 10,
+                  }}
+                  source={{ uri: url }}
+                />
+              </View>
             ))}
           </View>
         </View>

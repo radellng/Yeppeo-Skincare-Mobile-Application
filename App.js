@@ -2,7 +2,7 @@ import "react-native-gesture-handler";
 
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { LogBox, SafeAreaView } from "react-native";
+import { LogBox, SafeAreaView, TouchableOpacity } from "react-native";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -12,15 +12,95 @@ import { auth } from "./app/firebase";
 
 import HomeScreen from "./app/screens/HomeScreen";
 import ProfileScreen from "./app/screens/ProfileScreen";
+import EditProfileScreen from "./app/screens/EditProfileScreen";
 import ForumScreen from "./app/screens/ForumScreen";
 import SearchScreen from "./app/screens/SearchScreen";
 import UploadScreen from "./app/screens/UploadScreen";
 import FirstScreen from "./app/screens/FirstScreen";
 import SignInScreen from "./app/screens/SignInScreen";
 import RegisterScreen from "./app/screens/SignUpScreen";
+import SettingsScreen from "./app/screens/SettingsScreen";
+import CreatePostScreen from "./app/screens/CreatePostScreen";
+import ViewPostScreen from "./app/screens/ViewPostScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+
+const ProfileStack = ({ navigation }) => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="Profile"
+      component={ProfileScreen}
+      options={{
+        headerRight: () => (
+          <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+            <MaterialIcons name="settings" size={30} />
+          </TouchableOpacity>
+        ),
+      }}
+    />
+    <Stack.Screen
+      name="EditProfile"
+      component={EditProfileScreen}
+      options={{
+        headerTitle: "Edit Profile",
+        headerBackTitleVisible: false,
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: "#fff",
+          shadowColor: "#fff",
+          elevation: 0,
+        },
+      }}
+    />
+    <Stack.Screen
+      name="Settings"
+      component={SettingsScreen}
+      options={{
+        headerTitle: "Settings",
+        headerTitleAlign: "center",
+      }}
+    />
+  </Stack.Navigator>
+);
+
+const ForumStack = ({ navigation }) => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="Forum"
+      component={ForumScreen}
+      options={{
+        headerTitle: "Forum",
+        headerRight: () => (
+          <TouchableOpacity onPress={() => navigation.navigate("CreatePost")}>
+            <MaterialIcons name="create" size={30} />
+          </TouchableOpacity>
+        ),
+      }}
+    />
+    <Stack.Screen
+      name="CreatePost"
+      component={CreatePostScreen}
+      options={{
+        headerTitle: "Create Forum Post",
+        headerBackTitleVisible: false,
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: "#fff",
+          shadowColor: "#fff",
+          elevation: 0,
+        },
+      }}
+    />
+    <Stack.Screen
+      name="ViewPost"
+      component={ViewPostScreen}
+      options={{
+        headerShown: false,
+      }}
+    />
+  </Stack.Navigator>
+);
 
 LogBox.ignoreLogs(["Setting a timer for a long period of time"]);
 
@@ -123,14 +203,14 @@ export default function App() {
             />
             <Tab.Screen
               name="forum"
-              component={ForumScreen}
+              component={ForumStack}
               options={{
                 title: "Forum",
               }}
             />
             <Tab.Screen
               name="profile"
-              component={ProfileScreen}
+              component={ProfileStack}
               options={{
                 title: "Profile",
               }}

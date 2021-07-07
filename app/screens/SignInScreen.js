@@ -50,7 +50,7 @@ const LoginScreen = ({ navigation }) => {
             },
           ]}
         >
-          Username
+          Email
         </Text>
         <View style={styles.action}>
           <FontAwesome name="user-o" color={colors.text} size={20} />
@@ -76,21 +76,7 @@ const LoginScreen = ({ navigation }) => {
             rules={{ required: true }}
             defaultValue=""
           />
-
-          {/* {data.check_textInputChange ? (
-            <Animatable.View animation="bounceIn">
-              <Feather name="check-circle" color="green" size={20} />
-            </Animatable.View>
-          ) : null} */}
         </View>
-        {/* {data.isValidUser ? null : (
-          <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>
-              Username must be 4 characters long.
-            </Text>
-          </Animatable.View>
-        )} */}
-
         <Text
           style={[
             styles.text_footer,
@@ -127,21 +113,7 @@ const LoginScreen = ({ navigation }) => {
             rules={{ required: true }}
             defaultValue=""
           />
-          <TouchableOpacity>
-            {/* {data.secureTextEntry ? (
-              <Feather name="eye-off" color="grey" size={20} />
-            ) : (
-              <Feather name="eye" color="grey" size={20} />
-            )} */}
-          </TouchableOpacity>
         </View>
-        {/* {data.isValidPassword ? null : (
-          // <Animatable.View animation="fadeInLeft" duration={500}>
-          //   <Text style={styles.errorMsg}>
-          //     Password must be 8 characters long.
-          //   </Text>
-          // </Animatable.View>
-        )} */}
 
         <TouchableOpacity>
           <Text style={{ color: "#B6727A", marginTop: 15 }}>
