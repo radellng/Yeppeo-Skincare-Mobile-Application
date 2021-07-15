@@ -7,24 +7,40 @@ import {
   SafeAreaView,
   FlatList,
   Text,
+  RefreshControl,
   ScrollView,
   Button,
+  Touchable,
 } from "react-native";
 import Firebase from "firebase";
 import Entypo from "react-native-vector-icons/Entypo";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 // import { ScrollView } from "react-native-gesture-handler";
 // import { Text, Avatar, withStyles, List } from "react-native-ui-kitten";
 
 const ForumScreen = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
   const [voteCount, setVoteCount] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    // Hook to handle the initial fetching of posts
+  const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
+
+  // Create a function for refreshing the forum page
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    getPosts();
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
+  // Initial fetching of posts without useEffect
+  function getPosts() {
     Firebase.firestore()
       .collection("Posts")
       .orderBy("createdAt", "desc")
-      .onSnapshot((querySnapshot) => {
+      .get()
+      .then((querySnapshot) => {
         let data = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -32,17 +48,24 @@ const ForumScreen = ({ route, navigation }) => {
 
         setPosts(data);
       });
-  }, [posts]);
-  //     .get()
-  //     .then((querySnapshot) => {
-  //       const data = querySnapshot.docs.map((doc) => ({
+  }
+
+  getPosts();
+
+  // useEffect(() => {
+  //   // Hook to handle the initial fetching of posts
+  //   Firebase.firestore()
+  //     .collection("Posts")
+  //     .orderBy("createdAt", "desc")
+  //     .onSnapshot((querySnapshot) => {
+  //       let data = querySnapshot.docs.map((doc) => ({
   //         id: doc.id,
   //         ...doc.data(),
   //       }));
 
   //       setPosts(data);
   //     });
-  // }, []);
+  // }, [posts]);
 
   function upvote(postTime) {
     Firebase.firestore()
@@ -123,6 +146,15 @@ const ForumScreen = ({ route, navigation }) => {
       <View flexDirection="row" style={{ flex: 1, alignSelf: "flex-end" }}>
         <TouchableOpacity
           onPress={() => {
+            navigation.navigate("ViewPost", {
+              item: item,
+            });
+          }}
+        >
+          <MaterialIcons name="add-comment" size={30} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
             upvote(item.createdAt);
           }}
         >
@@ -161,10 +193,16 @@ const ForumScreen = ({ route, navigation }) => {
           >
             this is the forum
           </Text> */}
+          {/* <TouchableOpacity onPress={refreshForum()}>
+            <MaterialIcons name="refresh" size={30} />
+          </TouchableOpacity> */}
           <FlatList
             data={posts}
             renderItem={renderItem}
             keyExtractor={posts.id}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
           />
         </View>
         {/* <>

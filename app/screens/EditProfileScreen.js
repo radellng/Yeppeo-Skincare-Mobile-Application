@@ -12,14 +12,9 @@ import {
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import RNPickerSelect from "react-native-picker-select";
 import * as ImagePicker from "expo-image-picker";
 import * as Firebase from "firebase";
 import { firebaseConfig } from "../firebase";
-import Animated from "react-native-reanimated";
-
-const handleUpdate = async () => {};
-const uploadImage = async () => {};
 
 const EditProfileScreen = ({ route, navigation }) => {
   var user = Firebase.auth().currentUser;
@@ -28,9 +23,6 @@ const EditProfileScreen = ({ route, navigation }) => {
     Firebase.initializeApp(firebaseConfig);
   }
 
-  var storageRef = Firebase.storage().ref(
-    "images/" + String(user.uid) + "/profilePic/"
-  );
   var [imageUrl, setImageUrl] = useState(
     "https://firebasestorage.googleapis.com/v0/b/yeppeo-469e9.appspot.com/o/images%2Fdefault%20profile%20pic.jpg?alt=media&token=ea5b3733-83b8-441b-bc51-2e8192d19fb1"
   );
@@ -43,7 +35,7 @@ const EditProfileScreen = ({ route, navigation }) => {
   var [age, setAge] = useState("");
 
   var imageRef = Firebase.storage().ref(
-    "images/" + String(user.uid) + "/profilePic/pic"
+    "images/" + String(user.uid) + "/profilePic/pic.jpg"
   );
 
   // Retrieve data from firestore
@@ -63,7 +55,6 @@ const EditProfileScreen = ({ route, navigation }) => {
       .catch((e) => console.log("Errors while downloading => ", e));
   }, []);
 
-  
   // useEffect(() => {
   //   const fetchImages = async () => {
   //     let result = await storageRef.listAll();
@@ -94,7 +85,6 @@ const EditProfileScreen = ({ route, navigation }) => {
       setImageUrl(url);
     });
   }, []);
-  
 
   useEffect(() => {
     (async () => {
@@ -176,7 +166,7 @@ const EditProfileScreen = ({ route, navigation }) => {
         firstName: firstName,
         lastName: lastName,
         gender: gender,
-        age: age
+        age: age,
       })
       .then((ref) => {
         console.log("Information updated");

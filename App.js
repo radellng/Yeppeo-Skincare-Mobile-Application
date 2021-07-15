@@ -96,7 +96,7 @@ const ForumStack = ({ navigation }) => (
       name="ViewPost"
       component={ViewPostScreen}
       options={{
-        headerShown: false,
+        headerTitle: "View Forum Post",
       }}
     />
   </Stack.Navigator>

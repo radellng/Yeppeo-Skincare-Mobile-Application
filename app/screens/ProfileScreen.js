@@ -10,9 +10,6 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
-import { Card } from "react-native-elements";
-import { createStackNavigator } from "@react-navigation/stack";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import * as Firebase from "firebase";
 
 // const ProfileStack = createStackNavigator();
@@ -43,7 +40,7 @@ const ProfileScreen = ({ route, navigation }) => {
   var user = Firebase.auth().currentUser;
   // console.log(user.uid);
   var imageRef = Firebase.storage().ref(
-    "images/" + String(user.uid) + "/profilePic/pic"
+    "images/" + String(user.uid) + "/profilePic/pic.jpg"
   );
 
   var [imageUrl, setImageUrl] = useState(

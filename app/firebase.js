@@ -13,6 +13,12 @@ const fire = firebase.initializeApp({
   measurementId: "G-QBV8QN825H",
 });
 
+if (!firebase.apps.length) {
+  firebase.initializeApp({});
+} else {
+  firebase.app(); // if already initialized, use that one
+}
+
 export const auth = fire.auth();
 export const db = fire.firestore();
 export const storage = fire.storage();
