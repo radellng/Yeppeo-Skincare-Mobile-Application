@@ -31,11 +31,12 @@ const ForumScreen = ({ route, navigation }) => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     getPosts();
+    console.log("forum refreshed");
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
   // Initial fetching of posts without useEffect
-  function getPosts() {
+  const getPosts = React.useCallback(() => {
     Firebase.firestore()
       .collection("Posts")
       .orderBy("createdAt", "desc")
@@ -48,9 +49,9 @@ const ForumScreen = ({ route, navigation }) => {
 
         setPosts(data);
       });
-  }
+  }, [posts]);
 
-  getPosts();
+  console.log("forum page");
 
   // useEffect(() => {
   //   // Hook to handle the initial fetching of posts

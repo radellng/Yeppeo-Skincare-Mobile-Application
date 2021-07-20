@@ -22,6 +22,7 @@ import RegisterScreen from "./app/screens/SignUpScreen";
 import SettingsScreen from "./app/screens/SettingsScreen";
 import CreatePostScreen from "./app/screens/CreatePostScreen";
 import ViewPostScreen from "./app/screens/ViewPostScreen";
+import CreateCommentScreen from "./app/screens/CreateCommentScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -97,6 +98,20 @@ const ForumStack = ({ navigation }) => (
       component={ViewPostScreen}
       options={{
         headerTitle: "View Forum Post",
+        headerRight: () => (
+          <TouchableOpacity
+            onPress={() => navigation.navigate("CreateComment")}
+          >
+            <MaterialIcons name="create" size={30} />
+          </TouchableOpacity>
+        ),
+      }}
+    />
+    <Stack.Screen
+      name="CreateComment"
+      component={CreateCommentScreen}
+      options={{
+        headerTitle: "Add comment",
       }}
     />
   </Stack.Navigator>
