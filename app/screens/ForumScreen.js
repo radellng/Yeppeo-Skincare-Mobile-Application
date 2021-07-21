@@ -28,15 +28,8 @@ const ForumScreen = ({ route, navigation }) => {
   };
 
   // Create a function for refreshing the forum page
-  const onRefresh = React.useCallback(() => {
+  const onRefresh = () => {
     setRefreshing(true);
-    getPosts();
-    console.log("forum refreshed");
-    wait(2000).then(() => setRefreshing(false));
-  }, []);
-
-  // Initial fetching of posts without useEffect
-  const getPosts = React.useCallback(() => {
     Firebase.firestore()
       .collection("Posts")
       .orderBy("createdAt", "desc")
@@ -48,10 +41,31 @@ const ForumScreen = ({ route, navigation }) => {
         }));
 
         setPosts(data);
+        console.log("Forum page data fetched");
       });
-  }, [posts]);
 
-  console.log("forum page");
+    console.log("Forum refreshed");
+    wait(2000).then(() => setRefreshing(false));
+  };
+
+  // Initial fetching of posts
+  useEffect(() => {
+    Firebase.firestore()
+      .collection("Posts")
+      .orderBy("createdAt", "desc")
+      .get()
+      .then((querySnapshot) => {
+        let data = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setPosts(data);
+        console.log("Forum page data fetched");
+      });
+  }, []);
+
+  console.log("Forum page");
 
   // useEffect(() => {
   //   // Hook to handle the initial fetching of posts
@@ -98,17 +112,13 @@ const ForumScreen = ({ route, navigation }) => {
 
   const renderItem = ({ item }) => (
     <View style={{ backgroundColor: "#f4f4f4", marginBottom: 25 }}>
-      {/* <Image
-        source={{ uri: item.imageURI }}
-        style={this.props.themedStyle.cardImage}
-      /> */}
       <View
         style={{
           padding: 10,
           flex: 1,
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "space-between",
+          justifyContent: "flex-start",
           borderWidth: 1,
           borderColor: "#000000",
         }}
@@ -116,22 +126,12 @@ const ForumScreen = ({ route, navigation }) => {
         <Image
           source={{ uri: item.userURI }}
           size="small"
-          style={{ marginRight: 16, height: 50, width: 50 }}
+          style={{ marginRight: 15, height: 50, width: 50 }}
         />
-        <Text>{item.postedBy}: </Text>
+        <Text style={{ fontWeight: "bold" }}>{item.postedBy}: </Text>
         <Text style={{ flex: 1 }} category="s1">
           {item.title}
         </Text>
-
-        {/* <TouchableOpacity
-          onPress={() => this.props.navigation.navigate("Profile")}
-        >
-          <Avatar
-            source={{ uri: item.avatarURI }}
-            size="small"
-            style={this.props.themedStyle.cardAvatar}
-          />
-        </TouchableOpacity> */}
       </View>
       <View
         style={{
@@ -185,18 +185,6 @@ const ForumScreen = ({ route, navigation }) => {
             justifyContent: "center",
           }}
         >
-          {/* <Text
-            style={{
-              fontSize: 25,
-              textAlign: "center",
-              marginBottom: 16,
-            }}
-          >
-            this is the forum
-          </Text> */}
-          {/* <TouchableOpacity onPress={refreshForum()}>
-            <MaterialIcons name="refresh" size={30} />
-          </TouchableOpacity> */}
           <FlatList
             data={posts}
             renderItem={renderItem}
@@ -206,29 +194,6 @@ const ForumScreen = ({ route, navigation }) => {
             }
           />
         </View>
-        {/* <>
-          <TouchableOpacity
-            style={{
-              alignItems: "center",
-              position: "absolute",
-              bottom: 10,
-              right: 10,
-            }}
-            onpress={() => {
-              console.log("naivgate to create post");
-              navigation.navigate("CreatePost");
-            }}
-          >
-            <Image
-              source={require("../assets/add.png")}
-              resizeMode="contain"
-              style={{
-                height: 50,
-                width: 50,
-              }}
-            />
-          </TouchableOpacity>
-        </> */}
       </View>
     </SafeAreaView>
   );

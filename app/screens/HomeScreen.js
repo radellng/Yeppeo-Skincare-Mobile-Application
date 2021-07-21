@@ -7,6 +7,7 @@ import {
   Image,
   SafeAreaView,
   ScrollView,
+  RefreshControl,
 } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as Firebase from "firebase";
@@ -56,11 +57,46 @@ const HomeStackScreen = ({ route, navigation }) => {
       setImageUrl(urls);
     };
     loadImages();
-  }, [imageUrl]);
+    console.log("Home page image fetched");
+  }, []);
+
+  console.log("Home page");
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
+
+  // Create a function for refreshing the forum page
+  const onRefresh = () => {
+    setRefreshing(true);
+    const fetchImages = async () => {
+      let result = await storageRef.listAll();
+      let urlPromises = result.items.map((imageRef) =>
+        imageRef.getDownloadURL()
+      );
+
+      return Promise.all(urlPromises);
+    };
+
+    const loadImages = async () => {
+      const urls = await fetchImages();
+      setImageUrl(urls);
+    };
+    loadImages();
+    console.log("Home page image fetched");
+    console.log("Home refreshed");
+    wait(2000).then(() => setRefreshing(false));
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View
           style={{
             flex: 1,

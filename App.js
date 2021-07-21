@@ -98,13 +98,12 @@ const ForumStack = ({ navigation }) => (
       component={ViewPostScreen}
       options={{
         headerTitle: "View Forum Post",
-        headerRight: () => (
-          <TouchableOpacity
-            onPress={() => navigation.navigate("CreateComment")}
-          >
-            <MaterialIcons name="create" size={30} />
-          </TouchableOpacity>
-        ),
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: "#fff",
+          shadowColor: "#fff",
+          elevation: 0,
+        },
       }}
     />
     <Stack.Screen
@@ -112,6 +111,12 @@ const ForumStack = ({ navigation }) => (
       component={CreateCommentScreen}
       options={{
         headerTitle: "Add comment",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: "#fff",
+          shadowColor: "#fff",
+          elevation: 0,
+        },
       }}
     />
   </Stack.Navigator>

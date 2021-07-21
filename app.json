@@ -14,22 +14,22 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yeppeo",
-      "buildNumber": "1.0.0"
+      "bundleIdentifier": "com.yeppeo"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./app/assets/yeppeo_icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.yeppeo",
-      "versionCode": 1
+      "package": "com.yeppeo"
     },
     "web": {
-      "favicon": "./app/assets/yeppeo_icon.png"
+      "favicon": "./app/assets/favicon.png"
     }
   }
 }

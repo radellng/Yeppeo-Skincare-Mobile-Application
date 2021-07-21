@@ -12,10 +12,13 @@ import {
   SafeAreaView,
 } from "react-native";
 import Firebase from "firebase";
+import Entypo from "react-native-vector-icons/Entypo";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const ViewPostScreen = ({ route, navigation }) => {
   const { item } = route.params;
   const [comments, setComments] = useState([]);
+  const [voteCount, setVoteCount] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
   const wait = (timeout) => {
@@ -25,15 +28,9 @@ const ViewPostScreen = ({ route, navigation }) => {
   // Create a function for refreshing the comments page
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    getComments(item.createdAt);
-    wait(2000).then(() => setRefreshing(false));
-  }, []);
-
-  // Extract information from item
-  function getComments(postTime) {
     Firebase.firestore()
-      .collection("transaction")
-      .where("createdAt", "==", postTime)
+      .collection("Posts")
+      .where("createdAt", "==", item.createdAt)
       .get()
       .then((querySnapshot) => {
         return querySnapshot.docs[0].ref.collection("Comments").get();
@@ -45,89 +42,163 @@ const ViewPostScreen = ({ route, navigation }) => {
         }));
 
         setComments(data);
+        console.log("Comment page data fetched");
       });
-  }
 
-  getComments(item.createdAt);
+    console.log("Comments refreshed");
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
-  const renderItem = ({ comments }) => (
+  // Extract information from item
+  useEffect(() => {
+    Firebase.firestore()
+      .collection("Posts")
+      .where("createdAt", "==", item.createdAt)
+      .get()
+      .then((querySnapshot) => {
+        return querySnapshot.docs[0].ref.collection("Comments").get();
+      })
+      .then((querySnapshot) => {
+        let data = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setComments(data);
+        console.log("Comment page data fetched");
+      });
+  }, []);
+
+  console.log("Comment page loaded");
+
+  const renderItem = ({ item }) => (
     <View style={{ backgroundColor: "#f4f4f4", marginBottom: 25 }}>
-      {/* <Image
-        source={{ uri: item.imageURI }}
-        style={this.props.themedStyle.cardImage}
-      /> */}
       <View
         style={{
           padding: 10,
-          flex: 1,
           flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
+          justifyContent: "flex-start",
           borderWidth: 1,
           borderColor: "#000000",
         }}
       >
         <Image
-          source={{ uri: comments.userURI }}
+          source={{ uri: item.userURI }}
           size="small"
-          style={{ marginRight: 16, height: 50, width: 50 }}
+          style={{ marginRight: 15, height: 50, width: 50 }}
         />
-        <Text>{comments.postedBy}: </Text>
-        <Text style={{ flex: 1 }} category="s1">
-          {comments.comment}
+        <Text
+          style={{
+            flexShrink: 1,
+            flexDirection: "row",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Text
+            style={{
+              flexShrink: 1,
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              fontWeight: "bold",
+            }}
+          >
+            {item.postedBy}:{"\n"}
+          </Text>
+          <Text
+            style={{
+              flexShrink: 1,
+              flexDirection: "row",
+              justifyContent: "flex-start",
+            }}
+          >
+            {item.comment}
+          </Text>
         </Text>
-
-        {/* <TouchableOpacity
-          onPress={() => this.props.navigation.navigate("Profile")}
-        >
-          <Avatar
-            source={{ uri: item.avatarURI }}
-            size="small"
-            style={this.props.themedStyle.cardAvatar}
-          />
-        </TouchableOpacity> */}
-      </View>
-      <View flexDirection="row" style={{ flex: 1, alignSelf: "flex-end" }}>
-        <TouchableOpacity
-        // onPress={() => {
-        //   upvote(comment.createdAt);
-        // }}
-        >
-          <Entypo name="arrow-bold-up" color="#00ff00" size={30} />
-        </TouchableOpacity>
-        <Text style={{ fontSize: 18 }}>
-          {comments.upvotesCount - comments.downvotesCount}
-        </Text>
-        <TouchableOpacity
-        // onPress={() => {
-        //   downvote(comments.createdAt);
-        // }}
-        >
-          <Entypo name="arrow-bold-down" color="#ff0000" size={30} />
-        </TouchableOpacity>
       </View>
     </View>
   );
 
+  function upvote(postTime) {
+    Firebase.firestore()
+      .collection("Posts")
+      .where("createdAt", "==", postTime)
+      .get()
+      .then((query) => {
+        const thing = query.docs[0];
+        let tmp = thing.data();
+        tmp.upvotesCount = tmp.upvotesCount + 1;
+        console.log(tmp);
+        thing.ref.update(tmp);
+      });
+  }
+
+  function downvote(postTime) {
+    Firebase.firestore()
+      .collection("Posts")
+      .where("createdAt", "==", postTime)
+      .get()
+      .then((query) => {
+        const thing = query.docs[0];
+        let tmp = thing.data();
+        tmp.downvotesCount = tmp.downvotesCount + 1;
+        console.log(tmp);
+        thing.ref.update(tmp);
+      });
+  }
+
+  function showEmptyListView() {
+    return (
+      <View style={{ backgroundColor: "#f4f4f4", marginBottom: 25 }}>
+        <View
+          style={{
+            alignContent: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              flexShrink: 1,
+              fontWeight: "bold",
+              fontSize: 15,
+            }}
+          >
+            No comments yet, be the first to leave a comment!
+          </Text>
+        </View>
+      </View>
+    );
+  }
+
   return (
-    <SafeAreaView>
-      <View
-        style={{
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
-          marginTop: 100,
-        }}
-      >
-        <Text>This is the view post screen.</Text>
-        <FlatList
-          data={comments}
-          renderItem={renderItem}
-          keyExtractor={comments.id}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-        />
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={{ flex: 1, padding: 16 }}>
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <FlatList
+            data={comments}
+            renderItem={renderItem}
+            keyExtractor={comments.id}
+            ListEmptyComponent={showEmptyListView()}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          />
+        </View>
+        <TouchableOpacity
+          style={{ position: "absolute", bottom: 10, right: 10 }}
+          onPress={() => {
+            navigation.navigate("CreateComment", {
+              item: item,
+            });
+          }}
+        >
+          <MaterialIcons name="add-comment" size={50} />
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

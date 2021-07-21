@@ -73,7 +73,9 @@ const ProfileScreen = ({ route, navigation }) => {
       setImageUrl(url);
     };
     loadImages();
-  }, [imageUrl]);
+  }, []);
+
+  console.log("Profile page loaded");
 
   // useEffect(() => {
   //   imageRef.getDownloadURL().then((url) => {

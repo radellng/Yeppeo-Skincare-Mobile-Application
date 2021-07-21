@@ -217,6 +217,8 @@ const EditProfileScreen = ({ route, navigation }) => {
   //     });
   // }
 
+  console.log("Edit Profile page loaded");
+
   return (
     <View style={styles.container}>
       <View style={{ margin: 20 }}>

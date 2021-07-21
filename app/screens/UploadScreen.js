@@ -95,6 +95,8 @@ const UploadScreen = ({ route, navigation }) => {
     );
   };
 
+  console.log("Upload page loaded");
+
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity style={styles.selectButton} onPress={pickImage}>

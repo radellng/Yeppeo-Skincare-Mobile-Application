@@ -16,7 +16,7 @@ const CreatePostScreen = ({ route, navigation }) => {
   const [text, setText] = useState("");
   const [username, setUsername] = useState("");
   const [imageUrl, setImageUrl] = useState(
-    "ghttps://firebasestorage.googleapis.com/v0/b/yeppeo-469e9.appspot.com/o/images%2Fdefault%20profile%20pic.jpg?alt=media&token=ea5b3733-83b8-441b-bc51-2e8192d19fb1"
+    "https://firebasestorage.googleapis.com/v0/b/yeppeo-469e9.appspot.com/o/images%2Fdefault%20profile%20pic.jpg?alt=media&token=ea5b3733-83b8-441b-bc51-2e8192d19fb1"
   );
 
   var user = Firebase.auth().currentUser;
@@ -55,7 +55,7 @@ const CreatePostScreen = ({ route, navigation }) => {
       setImageUrl(urls[0]);
     };
     loadImages();
-  }, [imageUrl]);
+  }, []);
 
   function submitPost(title, text) {
     Firebase.firestore().collection("Posts").add({
@@ -69,6 +69,8 @@ const CreatePostScreen = ({ route, navigation }) => {
       updatedAt: Firebase.firestore.FieldValue.serverTimestamp(),
     });
   }
+
+  console.log("Create Post Screen loaded");
 
   return (
     <View style={{ flex: 1, marginTop: 30 }}>
@@ -93,7 +95,7 @@ const CreatePostScreen = ({ route, navigation }) => {
         )}
       </View> */}
       <View style={{ alignItems: "center" }}>
-        <Text style={{ fontSize: 20 }}>Post Details</Text>
+        <Text style={{ fontSize: 20 }}>What's on your mind?</Text>
         <TextInput
           placeholder="Enter title of the post"
           blurOnSubmit
