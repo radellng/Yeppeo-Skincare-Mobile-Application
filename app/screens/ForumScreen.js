@@ -126,7 +126,7 @@ const ForumScreen = ({ route, navigation }) => {
         <Image
           source={{ uri: item.userURI }}
           size="small"
-          style={{ marginRight: 15, height: 50, width: 50 }}
+          style={{ marginRight: 10, height: 50, width: 50 }}
         />
         <Text style={{ fontWeight: "bold" }}>{item.postedBy}: </Text>
         <Text style={{ flex: 1 }} category="s1">
@@ -138,8 +138,18 @@ const ForumScreen = ({ route, navigation }) => {
           padding: 10,
           borderWidth: 1,
           borderColor: "#000000",
+          flexDirection: "column",
+          flex: 1,
         }}
       >
+        <View style={{ alignSelf: "center" }}>
+          {item.uploadedImageUrl !== "" ? (
+            <Image
+              style={{ width: 250, height: 250 }}
+              source={{ uri: item.uploadedImageUrl }}
+            />
+          ) : null}
+        </View>
         <Text style={{ flex: 1 }} category="p2">
           {item.postText}
         </Text>

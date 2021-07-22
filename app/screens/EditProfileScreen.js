@@ -14,14 +14,10 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import * as ImagePicker from "expo-image-picker";
 import * as Firebase from "firebase";
-import { firebaseConfig } from "../firebase";
 
 const EditProfileScreen = ({ route, navigation }) => {
   var user = Firebase.auth().currentUser;
   // console.log(user.uid);
-  if (!Firebase.apps.length) {
-    Firebase.initializeApp(firebaseConfig);
-  }
 
   var [imageUrl, setImageUrl] = useState(
     "https://firebasestorage.googleapis.com/v0/b/yeppeo-469e9.appspot.com/o/images%2Fdefault%20profile%20pic.jpg?alt=media&token=ea5b3733-83b8-441b-bc51-2e8192d19fb1"
@@ -131,7 +127,7 @@ const EditProfileScreen = ({ route, navigation }) => {
 
     const ref = Firebase.storage()
       .ref()
-      .child("images/" + String(user.uid) + "/profilePic/pic");
+      .child("images/" + String(user.uid) + "/profilePic/pic.jpg");
 
     const snapshot = ref.put(blob);
 

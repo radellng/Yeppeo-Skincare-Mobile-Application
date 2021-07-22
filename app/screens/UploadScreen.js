@@ -14,21 +14,16 @@ import * as ImagePicker from "expo-image-picker";
 import * as Firebase from "firebase";
 import * as Progress from "react-native-progress";
 
-import { firebaseConfig, db } from "../firebase";
-
 const UploadScreen = ({ route, navigation }) => {
   const user = Firebase.auth().currentUser;
   // console.log(user.uid);
-  if (!Firebase.apps.length) {
-    Firebase.initializeApp(firebaseConfig);
-  }
 
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
 
   useEffect(() => {
-    (async () => {
+    async () => {
       if (Platform.OS !== "web") {
         const { status } =
           await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -36,7 +31,7 @@ const UploadScreen = ({ route, navigation }) => {
           alert("Sorry, we need camera roll permissions to make this work!");
         }
       }
-    })();
+    };
   }, []);
 
   const pickImage = async () => {

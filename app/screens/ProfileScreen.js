@@ -9,6 +9,7 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
+  RefreshControl,
 } from "react-native";
 import * as Firebase from "firebase";
 
@@ -48,10 +49,6 @@ const ProfileScreen = ({ route, navigation }) => {
   );
   var [username, setUsername] = useState("");
 
-  // imageRef.getDownloadURL().then((url) => {
-  //   setImageUrl(url);
-  // });
-
   useEffect(() => {
     Firebase.firestore()
       .collection("Users")
@@ -66,6 +63,25 @@ const ProfileScreen = ({ route, navigation }) => {
         }
       });
   }, []);
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
+
+  // Create a function for refreshing the forum page
+  const onRefresh = () => {
+    setRefreshing(true);
+    const loadImages = async () => {
+      let url = await imageRef.getDownloadURL();
+      setImageUrl(url);
+    };
+    loadImages();
+    console.log("Profile page image fetched");
+    console.log("Profile refreshed");
+    wait(2000).then(() => setRefreshing(false));
+  };
 
   useEffect(() => {
     const loadImages = async () => {
@@ -101,6 +117,9 @@ const ProfileScreen = ({ route, navigation }) => {
           justifyContent: "center",
           alignItems: "center",
         }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       >
         <Image style={styles.userImg} source={{ uri: imageUrl }} />
         <Text style={styles.userName}>{username}</Text>
