@@ -1,0 +1,140 @@
+[
+    {
+        "id": 1,
+        "title": "COSRX Advanced Snail 96 Mucin Power Essence",
+        "category": "essence",
+        "price":"29"
+    },
+    {
+        "id": 2,
+        "title": "Cerave Hydrating Mineral Sunscreen SPF 50",
+        "category": "sunscreen",
+        "price":"35"
+    },
+    {
+        "id": 3,
+        "title": "Cetaphil Gentle Skin Cleanser",
+        "category": "cleanser",
+        "price":"50"
+    },
+    {
+        "id": 4,
+        "title": "Dove Sensitive Skin Beauty Bar Soap",
+        "category": "cleanser",
+        "price":"65"
+    },
+    {
+        "id": 5,
+        "title": "Dr. Barbara Sturm Calming Serum",
+        "category": "serum",
+        "price":"250"
+    },
+    {
+        "id": 6,
+        "title": "Dr. Jart Cicapair Tiger Grass Calming Gel Cream",
+        "category": "moisturiser",
+        "price":"48"
+    },
+    {
+        "id": 7,
+        "title": "EltaMD UV Clear Broad-Spectrum SPF 46 Facial Sunscreen",
+        "category": "sunscreen",
+        "price":"37"
+    },
+    {
+        "id": 8,
+        "title": "First Aid Beauty Pure Skin Face Cleanser",
+        "category": "cleanser",
+        "price":"34"
+    },
+    {
+        "id": 9,
+        "title": "Laneige Essential Power Skin Toner",
+        "category": "toner",
+        "price":"28"
+    },
+    {
+        "id": 10,
+        "title": "Laneige Water Bank Hydro Essence",
+        "category": "essence",
+        "price":"26"
+    },
+    {
+        "id": 11,
+        "title": "Neutrogena Hydro Boost Gel Cream",
+        "category": "moisturiser",
+        "price":"15"
+    },
+    {
+        "id": 12,
+        "title": "Neutrogena Rapid Wrinkle Repair Eye Cream",
+        "category": "eye cream",
+        "price":"65"
+    },
+    {
+        "id": 13,
+        "title": "Neutrogena UltraSheer Dry-Touch Sunscreen SPF 100+",
+        "category": "sunscreen",
+        "price":"9"
+    },
+    {
+        "id": 14,
+        "title": "Olay Regenerist Micro-Sculpting Cream",
+        "category": "moisturiser",
+        "price":"50"
+    },
+    {
+        "id": 15,
+        "title": "Paula's Choice Skin Balancing Pore-Reducing Toner",
+        "category": "toner",
+        "price":"21"
+    },
+    {
+        "id": 16,
+        "title": "Renee Rouleau Moisture Infusion Toner",
+        "category": "toner",
+        "price":"44"
+    },
+    {
+        "id": 17,
+        "title": "RoC Retinol Correxion Eye Cream",
+        "category": "eye cream",
+        "price":"30"
+    },
+    {
+        "id": 18,
+        "title": "Rosen Skincare Paloma Serum",
+        "category": "serum",
+        "price":"14"
+    },
+    {
+        "id": 19,
+        "title": "SK-II Facial Treatment Essence",
+        "category": "essence",
+        "price":"220"
+    },
+    {
+        "id": 20,
+        "title": "SkinCeuticals C E Ferulic",
+        "category": "serum",
+        "price":"166"
+    },
+    {
+        "id": 21,
+        "title": "The Ordinary Caffeine Solution 5% + EGCG",
+        "category": "eye cream",
+        "price":"12"
+    },
+    {
+        "id": 22,
+        "title": "The Ordinary Glycolic Acid 7% Toning Solution",
+        "category": "toner",
+        "price":"9"
+    },
+    {
+        "id": 23,
+        "title": "Versed Baby Cheeks Hydrating Milk Toner",
+        "category": "toner",
+        "price":"18"
+    }  
+]
