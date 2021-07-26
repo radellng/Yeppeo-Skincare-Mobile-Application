@@ -19,7 +19,7 @@ import UploadScreen from "./app/screens/UploadScreen";
 import FirstScreen from "./app/screens/FirstScreen";
 import SignInScreen from "./app/screens/SignInScreen";
 import RegisterScreen from "./app/screens/SignUpScreen";
-import SettingsScreen from "./app/screens/SettingsScreen";
+// import SettingsScreen from "./app/screens/SettingsScreen";
 import CreatePostScreen from "./app/screens/CreatePostScreen";
 import ViewPostScreen from "./app/screens/ViewPostScreen";
 import CreateCommentScreen from "./app/screens/CreateCommentScreen";
@@ -32,13 +32,15 @@ const ProfileStack = ({ navigation }) => (
     <Stack.Screen
       name="Profile"
       component={ProfileScreen}
-      options={{
-        headerRight: () => (
-          <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
-            <MaterialIcons name="settings" size={30} />
-          </TouchableOpacity>
-        ),
-      }}
+      options={
+        {
+          // headerRight: () => (
+          //   <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+          //     <MaterialIcons name="settings" size={30} />
+          //   </TouchableOpacity>
+          // ),
+        }
+      }
     />
     <Stack.Screen
       name="EditProfile"
@@ -54,14 +56,14 @@ const ProfileStack = ({ navigation }) => (
         },
       }}
     />
-    <Stack.Screen
+    {/* <Stack.Screen
       name="Settings"
       component={SettingsScreen}
       options={{
         headerTitle: "Settings",
         headerTitleAlign: "center",
       }}
-    />
+    /> */}
   </Stack.Navigator>
 );
 

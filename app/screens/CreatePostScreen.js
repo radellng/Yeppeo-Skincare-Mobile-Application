@@ -9,6 +9,7 @@ import {
   TextInput,
   SafeAreaView,
   ScrollView,
+  Touchable,
 } from "react-native";
 import Firebase from "firebase";
 import * as ImagePicker from "expo-image-picker";
@@ -203,14 +204,15 @@ const CreatePostScreen = ({ route, navigation }) => {
             <Image source={{ uri: image }} style={styles.imageBox} />
           ) : null}
         </View>
-        <Button
-          title="post"
-          status="success"
+        <TouchableOpacity
+          style={styles.userBtn}
           onPress={() => {
             submitPost(title, text);
             navigation.navigate("Forum");
           }}
-        ></Button>
+        >
+          <Text style={styles.userBtnTxt}>Post</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -239,6 +241,17 @@ const styles = StyleSheet.create({
   imageBox: {
     width: 300,
     height: 300,
+  },
+  userBtn: {
+    borderColor: "#2e64e5",
+    borderWidth: 2,
+    borderRadius: 3,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    marginHorizontal: 5,
+  },
+  userBtnTxt: {
+    color: "#2e64e5",
   },
 });
 

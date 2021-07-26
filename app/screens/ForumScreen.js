@@ -143,7 +143,7 @@ const ForumScreen = ({ route, navigation }) => {
         }}
       >
         <View style={{ alignSelf: "center" }}>
-          {item.uploadedImageUrl !== "" ? (
+          {item.uploadedImageUrl != null ? (
             <Image
               style={{ width: 250, height: 250 }}
               source={{ uri: item.uploadedImageUrl }}
