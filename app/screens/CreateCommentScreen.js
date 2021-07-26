@@ -15,9 +15,7 @@ const CreateCommentScreen = ({ route, navigation }) => {
   const { item } = route.params;
   const [text, setText] = useState("");
   const [username, setUsername] = useState("");
-  const [imageUrl, setImageUrl] = useState(
-    "https://firebasestorage.googleapis.com/v0/b/yeppeo-469e9.appspot.com/o/images%2Fdefault%20profile%20pic.jpg?alt=media&token=ea5b3733-83b8-441b-bc51-2e8192d19fb1"
-  );
+  const [imageUrl, setImageUrl] = useState("");
 
   var user = Firebase.auth().currentUser;
   var storageRef = Firebase.storage().ref(
@@ -32,7 +30,8 @@ const CreateCommentScreen = ({ route, navigation }) => {
       .then(function (doc) {
         if (doc.exists) {
           let data = doc.data();
-          return setUsername(data.username);
+          setUsername(data.username);
+          setImageUrl(data.imageUrl);
         } else {
           return "";
         }
@@ -40,22 +39,22 @@ const CreateCommentScreen = ({ route, navigation }) => {
       .catch((e) => console.log("Errors while downloading => ", e));
   }, []);
 
-  useEffect(() => {
-    const fetchImages = async () => {
-      let result = await storageRef.listAll();
-      let urlPromises = result.items.map((imageRef) =>
-        imageRef.getDownloadURL()
-      );
+  // useEffect(() => {
+  //   const fetchImages = async () => {
+  //     let result = await storageRef.listAll();
+  //     let urlPromises = result.items.map((imageRef) =>
+  //       imageRef.getDownloadURL()
+  //     );
 
-      return Promise.all(urlPromises);
-    };
+  //     return Promise.all(urlPromises);
+  //   };
 
-    const loadImages = async () => {
-      const urls = await fetchImages();
-      setImageUrl(urls[0]);
-    };
-    loadImages();
-  }, []);
+  //   const loadImages = async () => {
+  //     const urls = await fetchImages();
+  //     setImageUrl(urls[0]);
+  //   };
+  //   loadImages();
+  // }, []);
 
   function submitPost(text) {
     Firebase.firestore()
@@ -106,18 +105,34 @@ const CreateCommentScreen = ({ route, navigation }) => {
           value={text}
           onChangeText={(description) => setText(description)}
         />
-        <Button
-          title="submit"
-          status="success"
+
+        <TouchableOpacity
+          style={styles.userBtn}
           onPress={() => {
             console.log("Comment posted");
             submitPost(text);
             navigation.navigate("ViewPost");
           }}
-        ></Button>
+        >
+          <Text style={styles.userBtnTxt}>Post</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  userBtn: {
+    borderColor: "#2e64e5",
+    borderWidth: 2,
+    borderRadius: 3,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    marginHorizontal: 5,
+  },
+  userBtnTxt: {
+    color: "#2e64e5",
+  },
+});
 
 export default CreateCommentScreen;

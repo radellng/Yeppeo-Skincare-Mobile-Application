@@ -211,7 +211,7 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f2f2f2",
     padding: 20,
   },
   userImg: {

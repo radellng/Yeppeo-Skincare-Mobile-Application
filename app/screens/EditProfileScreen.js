@@ -393,7 +393,7 @@ const EditProfileScreen = ({ route, navigation }) => {
         style={styles.userBtn}
         onPress={() => {
           updateInfo();
-          // navigation.navigate("Profile");
+          navigation.navigate("Profile");
         }}
       >
         <Text style={styles.userBtnTxt}>Update</Text>
