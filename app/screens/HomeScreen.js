@@ -41,6 +41,22 @@ const HomeStackScreen = ({ route, navigation }) => {
   // console.log(user.uid);
   var storageRef = Firebase.storage().ref("images/" + String(user.uid) + "/");
   var [imageUrl, setImageUrl] = useState([]);
+  var [username, setUsername] = useState("");
+
+  useEffect(() => {
+    Firebase.firestore()
+      .collection("Users")
+      .doc(user.uid)
+      .onSnapshot((doc) => {
+        if (doc.exists) {
+          let data = doc.data();
+          console.log(data.username);
+          setUsername(data.username);
+        } else {
+          return console.log("No data found");
+        }
+      });
+  }, []);
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -106,13 +122,37 @@ const HomeStackScreen = ({ route, navigation }) => {
         >
           <Text
             style={{
-              fontSize: 25,
+              fontSize: 20,
               textAlign: "center",
               marginBottom: 16,
+              fontFamily: "Roboto",
             }}
           >
-            Skincare Diary
+            Welcome back, {username}.
           </Text>
+          {imageUrl.length == 0 ? (
+            <Text
+              style={{
+                fontSize: 20,
+                textAlign: "center",
+                marginBottom: 16,
+                fontFamily: "Roboto",
+              }}
+            >
+              Upload your first image to get started!
+            </Text>
+          ) : (
+            <Text
+              style={{
+                fontSize: 20,
+                textAlign: "center",
+                marginBottom: 16,
+                fontFamily: "Roboto",
+              }}
+            >
+              Check out your progress!
+            </Text>
+          )}
           <View
             style={{
               flex: 1,
@@ -127,6 +167,7 @@ const HomeStackScreen = ({ route, navigation }) => {
                 source={{ uri: url }}
               />
             ))} */}
+
             {imageUrl.reverse().map((url, index) => (
               <View
                 key={index}

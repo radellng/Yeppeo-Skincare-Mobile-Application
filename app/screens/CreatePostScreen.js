@@ -109,32 +109,37 @@ const CreatePostScreen = ({ route, navigation }) => {
       .child(
         "forumImages/" + String(user.uid) + "/" + new Date().toISOString()
       );
-    const snapshot = ref.put(blob);
+    await ref.put(blob);
 
-    snapshot.on(
-      Firebase.storage.TaskEvent.STATE_CHANGED,
-      () => {
-        setUploading(true);
-      },
-      (error) => {
-        setUploading(false);
-        console.log(error);
-        blob.close();
-        return;
-      },
-      () => {
-        snapshot.snapshot.ref.getDownloadURL().then((url) => {
-          setUploading(false);
-          console.log("download url : ", url);
-          setUploadedImageUrl(url);
-          blob.close();
-          return url;
-        });
-      }
-    );
+    const url = await ref.getDownloadURL().catch((error) => {
+      throw error;
+    });
+    return url;
+    // snapshot.on(
+    //   Firebase.storage.TaskEvent.STATE_CHANGED,
+    //   () => {
+    //     setUploading(true);
+    //   },
+    //   (error) => {
+    //     setUploading(false);
+    //     console.log(error);
+    //     blob.close();
+    //     return;
+    //   },
+    //   () => {
+    //     snapshot.snapshot.ref.getDownloadURL().then((url) => {
+    //       setUploading(false);
+    //       console.log("download url : ", url);
+    //       setUploadedImageUrl(url);
+    //       blob.close();
+    //       return url;
+    //     });
+    //   }
+    // );
   };
 
   async function submitPost(title, text) {
+    var uploadedUrl = image === null ? null : await uploadImage();
     Firebase.firestore().collection("Posts").add({
       postedBy: username,
       createdAt: Firebase.firestore.FieldValue.serverTimestamp(),
@@ -144,7 +149,7 @@ const CreatePostScreen = ({ route, navigation }) => {
       title: title,
       postText: text,
       updatedAt: Firebase.firestore.FieldValue.serverTimestamp(),
-      uploadedImageUrl: uploadedImageUrl,
+      uploadedImageUrl: uploadedUrl,
     });
     console.log("Post submitted");
   }
@@ -202,7 +207,6 @@ const CreatePostScreen = ({ route, navigation }) => {
           title="post"
           status="success"
           onPress={() => {
-            image === null ? null : uploadImage();
             submitPost(title, text);
             navigation.navigate("Forum");
           }}

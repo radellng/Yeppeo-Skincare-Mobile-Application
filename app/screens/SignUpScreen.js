@@ -17,6 +17,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
 import { auth } from "../firebase";
+import * as Firebase from "firebase";
 
 const RegisterScreen = ({ navigation }) => {
   const { control, handleSubmit, errors, watch, register } = useForm();
@@ -24,10 +25,33 @@ const RegisterScreen = ({ navigation }) => {
   const password = useRef({});
   password.current = watch("password", "");
 
-  const onSubmit = (data) => {
-    const { email, password } = data;
-    console.log(email, password);
-    auth.createUserWithEmailAndPassword(email.trim().toLowerCase(), password);
+  function updateInfo(username) {
+    Firebase.firestore()
+      .collection("Users")
+      .doc(Firebase.auth().currentUser.uid)
+      .set({
+        username: username,
+        firstName: "",
+        lastName: "",
+        gender: "",
+        age: "",
+        uid: Firebase.auth().currentUser.uid,
+        imageUrl:
+          "https://firebasestorage.googleapis.com/v0/b/yeppeo-469e9.appspot.com/o/images%2Fdefault%20profile%20pic.jpg?alt=media&token=ea5b3733-83b8-441b-bc51-2e8192d19fb1",
+      })
+      .then((ref) => {
+        console.log("Information updated");
+      });
+  }
+
+  const onSubmit = async (data) => {
+    const { email, username, password } = data;
+    console.log(email, username, password);
+    await auth.createUserWithEmailAndPassword(
+      email.trim().toLowerCase(),
+      password
+    );
+    updateInfo(username);
   };
 
   return (
@@ -56,7 +80,7 @@ const RegisterScreen = ({ navigation }) => {
               defaultValue=""
             />
           </View>
-          {/* <Text
+          <Text
             style={[
               styles.text_footer,
               {
@@ -82,7 +106,7 @@ const RegisterScreen = ({ navigation }) => {
               rules={{ required: true }}
               defaultValue=""
             />
-          </View> */}
+          </View>
           <Text
             style={[
               styles.text_footer,

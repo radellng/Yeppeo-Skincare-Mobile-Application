@@ -14,7 +14,7 @@ const fire = firebase.initializeApp({
 });
 
 if (!firebase.apps.length) {
-  fire;
+  fire();
 } else {
   firebase.app(); // if already initialized, use that one
 }

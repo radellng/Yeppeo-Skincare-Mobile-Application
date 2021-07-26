@@ -19,9 +19,7 @@ const EditProfileScreen = ({ route, navigation }) => {
   var user = Firebase.auth().currentUser;
   // console.log(user.uid);
 
-  var [imageUrl, setImageUrl] = useState(
-    "https://firebasestorage.googleapis.com/v0/b/yeppeo-469e9.appspot.com/o/images%2Fdefault%20profile%20pic.jpg?alt=media&token=ea5b3733-83b8-441b-bc51-2e8192d19fb1"
-  );
+  var [imageUrl, setImageUrl] = useState("");
   var [uploading, setUploading] = useState(false);
   var [transferred, setTransferred] = useState(0);
   var [username, setUsername] = useState("");
@@ -29,6 +27,14 @@ const EditProfileScreen = ({ route, navigation }) => {
   var [lastName, setLastName] = useState("");
   var [gender, setGender] = useState("");
   var [age, setAge] = useState("");
+  var [newUsername, setNewUsername] = useState("");
+  var [newFirstName, setNewFirstName] = useState("");
+  var [newLastName, setNewLastName] = useState("");
+  var [newGender, setNewGender] = useState("");
+  var [newAge, setNewAge] = useState("");
+  var [currImageUrl, setCurrImageUrl] = useState(
+    "https://firebasestorage.googleapis.com/v0/b/yeppeo-469e9.appspot.com/o/images%2Fdefault%20profile%20pic.jpg?alt=media&token=ea5b3733-83b8-441b-bc51-2e8192d19fb1"
+  );
 
   var imageRef = Firebase.storage().ref(
     "images/" + String(user.uid) + "/profilePic/pic.jpg"
@@ -38,12 +44,17 @@ const EditProfileScreen = ({ route, navigation }) => {
   useEffect(() => {
     Firebase.firestore()
       .collection("Users")
-      .doc(String(user.uid))
+      .doc(user.uid)
       .get()
       .then(function (doc) {
         if (doc.exists) {
           let data = doc.data();
-          return setUsername(data.username);
+          setUsername(data.username);
+          setCurrImageUrl(data.imageUrl);
+          setAge(data.age);
+          setGender(data.gender);
+          setFirstName(data.firstName);
+          setLastName(data.lastName);
         } else {
           return "";
         }
@@ -76,11 +87,11 @@ const EditProfileScreen = ({ route, navigation }) => {
   //   loadImages();
   // }, [imageUrl]);
 
-  useEffect(() => {
-    imageRef.getDownloadURL().then((url) => {
-      setImageUrl(url);
-    });
-  }, []);
+  // useEffect(() => {
+  //   imageRef.getDownloadURL().then((url) => {
+  //     setImageUrl(url);
+  //   });
+  // }, []);
 
   useEffect(() => {
     (async () => {
@@ -129,40 +140,47 @@ const EditProfileScreen = ({ route, navigation }) => {
       .ref()
       .child("images/" + String(user.uid) + "/profilePic/pic.jpg");
 
-    const snapshot = ref.put(blob);
+    await ref.put(blob);
 
-    snapshot.on(
-      Firebase.storage.TaskEvent.STATE_CHANGED,
-      () => {
-        setUploading(true);
-      },
-      (error) => {
-        setUploading(false);
-        console.log(error);
-        blob.close();
-        return;
-      },
-      () => {
-        snapshot.snapshot.ref.getDownloadURL().then((url) => {
-          setUploading(false);
-          console.log("download url : ", url);
-          blob.close();
-          return url;
-        });
-      }
-    );
+    const url = await ref.getDownloadURL().catch((error) => {
+      throw error;
+    });
+    return url;
+
+    // snapshot.on(
+    //   Firebase.storage.TaskEvent.STATE_CHANGED,
+    //   () => {
+    //     setUploading(true);
+    //   },
+    //   (error) => {
+    //     setUploading(false);
+    //     console.log(error);
+    //     blob.close();
+    //     return;
+    //   },
+    //   () => {
+    //     snapshot.snapshot.ref.getDownloadURL().then((url) => {
+    //       setUploading(false);
+    //       console.log("download url : ", url);
+    //       blob.close();
+    //       return url;
+    //     });
+    //   }
+    // );
   };
 
-  function updateInfo(username, firstName, lastName, gender, age) {
+  async function updateInfo() {
+    var uploadedUrl = imageUrl == "" ? "" : await updatePic();
     Firebase.firestore()
       .collection("Users")
       .doc(String(user.uid))
-      .set({
-        username: username,
-        firstName: firstName,
-        lastName: lastName,
-        gender: gender,
-        age: age,
+      .update({
+        username: newUsername == "" ? username : newUsername,
+        firstName: newFirstName == "" ? firstName : newFirstName,
+        lastName: newLastName == "" ? lastName : newLastName,
+        gender: newGender == "" ? gender : newGender,
+        age: newAge == "" ? age : newAge,
+        imageUrl: uploadedUrl == "" ? currImageUrl : uploadedUrl,
       })
       .then((ref) => {
         console.log("Information updated");
@@ -230,7 +248,7 @@ const EditProfileScreen = ({ route, navigation }) => {
               }}
             >
               <ImageBackground
-                source={{ uri: imageUrl }}
+                source={{ uri: imageUrl == "" ? currImageUrl : imageUrl }}
                 style={{ height: 100, width: 100 }}
                 imageStyle={{ borderRadius: 15 }}
               >
@@ -266,13 +284,13 @@ const EditProfileScreen = ({ route, navigation }) => {
         <View style={styles.action}>
           <FontAwesome name="user-o" color="#333333" size={20} />
           <TextInput
-            placeholder="Username"
+            placeholder={username == "" ? "Username" : username}
             blurOnSubmit
             autoCorrect={false}
             maxLength={15}
             placeholderTextColor="#666666"
-            value={username}
-            onChangeText={(text) => setUsername(text)}
+            value={newUsername}
+            onChangeText={(text) => setNewUsername(text)}
             style={styles.textInput}
           />
         </View>
@@ -280,13 +298,13 @@ const EditProfileScreen = ({ route, navigation }) => {
         <View style={styles.action}>
           <FontAwesome name="user-o" color="#333333" size={20} />
           <TextInput
-            placeholder="First Name"
+            placeholder={firstName == "" ? "First Name" : firstName}
             blurOnSubmit
             autoCorrect={false}
             maxLength={15}
             placeholderTextColor="#666666"
-            value={firstName}
-            onChangeText={(text) => setFirstName(text)}
+            value={newFirstName}
+            onChangeText={(text) => setNewFirstName(text)}
             style={styles.textInput}
           />
         </View>
@@ -294,13 +312,13 @@ const EditProfileScreen = ({ route, navigation }) => {
         <View style={styles.action}>
           <FontAwesome name="user-o" color="#333333" size={20} />
           <TextInput
-            placeholder="Last Name"
+            placeholder={lastName == "" ? "Last Name" : lastName}
             blurOnSubmit
             autoCorrect={false}
             maxLength={15}
             placeholderTextColor="#666666"
-            value={lastName}
-            onChangeText={(text) => setLastName(text)}
+            value={newLastName}
+            onChangeText={(text) => setNewLastName(text)}
             style={styles.textInput}
           />
         </View>
@@ -308,13 +326,13 @@ const EditProfileScreen = ({ route, navigation }) => {
         <View style={styles.action}>
           <Ionicons name="ios-clipboard-outline" color="#333333" size={20} />
           <TextInput
-            placeholder="Gender"
+            placeholder={gender == "" ? "Gender" : gender}
             blurOnSubmit
             autoCorrect={false}
             maxLength={15}
             placeholderTextColor="#666666"
-            value={gender}
-            onChangeText={(text) => setGender(text)}
+            value={newGender}
+            onChangeText={(text) => setNewGender(text)}
             style={styles.textInput}
           />
         </View>
@@ -330,18 +348,18 @@ const EditProfileScreen = ({ route, navigation }) => {
             ]}
           /> */}
           <TextInput
-            placeholder="Age"
+            placeholder={age == "" ? "Age" : age}
             blurOnSubmit
             autoCorrect={false}
             maxLength={15}
             placeholderTextColor="#666666"
-            value={age}
-            onChangeText={(text) => setAge(text)}
+            value={newAge}
+            onChangeText={(text) => setNewAge(text)}
             style={styles.textInput}
           />
         </View>
 
-        <View style={styles.action}>
+        {/* <View style={styles.action}>
           <FontAwesome name="globe" color="#333333" size={20} />
           <TextInput
             placeholder="Climate of Home"
@@ -359,7 +377,7 @@ const EditProfileScreen = ({ route, navigation }) => {
             autoCorrect={false}
             style={styles.textInput}
           />
-        </View>
+        </View> */}
 
         {/* <View style={styles.action}>
           <FontAwesome name="info" color="#333333" size={20} />
@@ -374,8 +392,7 @@ const EditProfileScreen = ({ route, navigation }) => {
       <TouchableOpacity
         style={styles.userBtn}
         onPress={() => {
-          updatePic();
-          updateInfo(username, firstName, lastName, gender, age);
+          updateInfo();
           // navigation.navigate("Profile");
         }}
       >

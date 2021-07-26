@@ -40,24 +40,28 @@ import * as Firebase from "firebase";
 const ProfileScreen = ({ route, navigation }) => {
   var user = Firebase.auth().currentUser;
   // console.log(user.uid);
-  var imageRef = Firebase.storage().ref(
-    "images/" + String(user.uid) + "/profilePic/pic.jpg"
-  );
+  // var imageRef = Firebase.storage().ref(
+  //   "images/" + String(user.uid) + "/profilePic/pic.jpg"
+  // );
 
-  var [imageUrl, setImageUrl] = useState(
+  // var [imageUrl, setImageUrl] = useState(
+  //   "https://firebasestorage.googleapis.com/v0/b/yeppeo-469e9.appspot.com/o/images%2Fdefault%20profile%20pic.jpg?alt=media&token=ea5b3733-83b8-441b-bc51-2e8192d19fb1"
+  // );
+  var [username, setUsername] = useState("");
+  var [currImageUrl, setCurrImageUrl] = useState(
     "https://firebasestorage.googleapis.com/v0/b/yeppeo-469e9.appspot.com/o/images%2Fdefault%20profile%20pic.jpg?alt=media&token=ea5b3733-83b8-441b-bc51-2e8192d19fb1"
   );
-  var [username, setUsername] = useState("");
 
   useEffect(() => {
     Firebase.firestore()
       .collection("Users")
-      .doc(String(user.uid))
+      .doc(user.uid)
       .onSnapshot((doc) => {
         console.log("Current data: ", doc.data());
         if (doc.exists) {
           let data = doc.data();
-          return setUsername(data.username);
+          setUsername(data.username);
+          setCurrImageUrl(data.imageUrl);
         } else {
           return console.log("No data found");
         }
@@ -73,23 +77,36 @@ const ProfileScreen = ({ route, navigation }) => {
   // Create a function for refreshing the forum page
   const onRefresh = () => {
     setRefreshing(true);
-    const loadImages = async () => {
-      let url = await imageRef.getDownloadURL();
-      setImageUrl(url);
-    };
-    loadImages();
+    // const loadImages = async () => {
+    //   let url = await imageRef.getDownloadURL();
+    //   setImageUrl(url);
+    // };
+    // loadImages();
+    Firebase.firestore()
+      .collection("Users")
+      .doc(user.uid)
+      .onSnapshot((doc) => {
+        console.log("Current data: ", doc.data());
+        if (doc.exists) {
+          let data = doc.data();
+          setUsername(data.username);
+          setCurrImageUrl(data.imageUrl);
+        } else {
+          return console.log("No data found");
+        }
+      });
     console.log("Profile page image fetched");
     console.log("Profile refreshed");
     wait(2000).then(() => setRefreshing(false));
   };
 
-  useEffect(() => {
-    const loadImages = async () => {
-      let url = await imageRef.getDownloadURL();
-      setImageUrl(url);
-    };
-    loadImages();
-  }, []);
+  // useEffect(() => {
+  //   const loadImages = async () => {
+  //     let url = await imageRef.getDownloadURL();
+  //     setImageUrl(url);
+  //   };
+  //   loadImages();
+  // }, []);
 
   console.log("Profile page loaded");
 
@@ -121,7 +138,7 @@ const ProfileScreen = ({ route, navigation }) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <Image style={styles.userImg} source={{ uri: imageUrl }} />
+        <Image style={styles.userImg} source={{ uri: currImageUrl }} />
         <Text style={styles.userName}>{username}</Text>
         <Text style={styles.aboutUser}>About User</Text>
 
