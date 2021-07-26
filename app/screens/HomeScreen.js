@@ -133,9 +133,9 @@ const HomeStackScreen = ({ route, navigation }) => {
           {imageUrl.length == 0 ? (
             <Text
               style={{
-                fontSize: 20,
+                fontSize: 18,
                 textAlign: "center",
-                marginBottom: 16,
+                marginBottom: 10,
                 fontFamily: "Roboto",
               }}
             >
@@ -144,13 +144,12 @@ const HomeStackScreen = ({ route, navigation }) => {
           ) : (
             <Text
               style={{
-                fontSize: 20,
+                fontSize: 18,
                 textAlign: "center",
-                marginBottom: 16,
                 fontFamily: "Roboto",
               }}
             >
-              Check out your progress!
+              You are making good progress, keep it up!
             </Text>
           )}
           <View

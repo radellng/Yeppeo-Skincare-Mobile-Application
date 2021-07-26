@@ -51,7 +51,12 @@ const ProfileScreen = ({ route, navigation }) => {
   var [currImageUrl, setCurrImageUrl] = useState(
     "https://firebasestorage.googleapis.com/v0/b/yeppeo-469e9.appspot.com/o/images%2Fdefault%20profile%20pic.jpg?alt=media&token=ea5b3733-83b8-441b-bc51-2e8192d19fb1"
   );
+  var [firstName, setFirstName] = useState("");
+  var [lastName, setLastName] = useState("");
+  var [gender, setGender] = useState("");
+  var [age, setAge] = useState("");
 
+  // Retrieve data from firestore
   useEffect(() => {
     Firebase.firestore()
       .collection("Users")
@@ -62,6 +67,10 @@ const ProfileScreen = ({ route, navigation }) => {
           let data = doc.data();
           setUsername(data.username);
           setCurrImageUrl(data.imageUrl);
+          setAge(data.age);
+          setGender(data.gender);
+          setFirstName(data.firstName);
+          setLastName(data.lastName);
         } else {
           return console.log("No data found");
         }
@@ -140,8 +149,12 @@ const ProfileScreen = ({ route, navigation }) => {
       >
         <Image style={styles.userImg} source={{ uri: currImageUrl }} />
         <Text style={styles.userName}>{username}</Text>
-        <Text style={styles.aboutUser}>About User</Text>
-
+        <Text style={styles.aboutUser}>
+          {firstName} {lastName}
+        </Text>
+        <Text style={styles.aboutUser}>
+          {gender}, {age}
+        </Text>
         <View style={styles.userBtnWrapper}>
           <>
             <TouchableOpacity

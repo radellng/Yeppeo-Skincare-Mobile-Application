@@ -84,6 +84,7 @@ const UploadScreen = ({ route, navigation }) => {
           setUploading(false);
           console.log("download url : ", url);
           blob.close();
+          setImage(null);
           return url;
         });
       }
