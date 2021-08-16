@@ -16,19 +16,6 @@ const SearchScreen = ({ route, navigation }) => {
     return () => {};
   }, []);
 
-  // const fetchPosts = () => {
-  //   const apiURL = "https://jsonplaceholder.typicode.com/posts";
-  //   fetch(apiURL)
-  //     .then((response) => response.json())
-  //     .then((responseJson) => {
-  //       setfilteredData(responseJson);
-  //       setmasterData(responseJson);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // };
-
   // change this to firebase collection
   const fetchData = () => {
     setfilteredData(skincareData);
@@ -36,8 +23,6 @@ const SearchScreen = ({ route, navigation }) => {
   };
 
   //change this to how u want to view each item
-  //with category and price also can
-  //image also possible if database has image url in each object
   const ItemView = ({ item }) => {
     return (
       <Text style={styles.itemStyle}>

@@ -13,40 +13,8 @@ import {
 } from "react-native";
 import * as Firebase from "firebase";
 
-// const ProfileStack = createStackNavigator();
-
-// const ProfileScreen = ({ route, navigation }) => {
-//   return (
-//     <ProfileStack.Navigator initialRouteName="Profile">
-//       <ProfileStack.Screen
-//         name="Profile"
-//         component={ProfileStackScreen}
-//         options={{
-//           headerRight: () => (
-//             <TouchableOpacity
-//               style={styles.button}
-//               onPress={() => navigation.navigate("Settings")}
-//             >
-//               <MaterialIcons name="settings" size={30} />
-//             </TouchableOpacity>
-//           ),
-//         }}
-//       />
-//       <ProfileStack.Screen name="Settings" component={SettingsStackScreen} />
-//     </ProfileStack.Navigator>
-//   );
-// };
-
 const ProfileScreen = ({ route, navigation }) => {
   var user = Firebase.auth().currentUser;
-  // console.log(user.uid);
-  // var imageRef = Firebase.storage().ref(
-  //   "images/" + String(user.uid) + "/profilePic/pic.jpg"
-  // );
-
-  // var [imageUrl, setImageUrl] = useState(
-  //   "https://firebasestorage.googleapis.com/v0/b/yeppeo-469e9.appspot.com/o/images%2Fdefault%20profile%20pic.jpg?alt=media&token=ea5b3733-83b8-441b-bc51-2e8192d19fb1"
-  // );
   var [username, setUsername] = useState("");
   var [currImageUrl, setCurrImageUrl] = useState(
     "https://firebasestorage.googleapis.com/v0/b/yeppeo-469e9.appspot.com/o/images%2Fdefault%20profile%20pic.jpg?alt=media&token=ea5b3733-83b8-441b-bc51-2e8192d19fb1"
@@ -86,11 +54,6 @@ const ProfileScreen = ({ route, navigation }) => {
   // Create a function for refreshing the forum page
   const onRefresh = () => {
     setRefreshing(true);
-    // const loadImages = async () => {
-    //   let url = await imageRef.getDownloadURL();
-    //   setImageUrl(url);
-    // };
-    // loadImages();
     Firebase.firestore()
       .collection("Users")
       .doc(user.uid)
@@ -109,32 +72,7 @@ const ProfileScreen = ({ route, navigation }) => {
     wait(2000).then(() => setRefreshing(false));
   };
 
-  // useEffect(() => {
-  //   const loadImages = async () => {
-  //     let url = await imageRef.getDownloadURL();
-  //     setImageUrl(url);
-  //   };
-  //   loadImages();
-  // }, []);
-
   console.log("Profile page loaded");
-
-  // useEffect(() => {
-  //   imageRef.getDownloadURL().then((url) => {
-  //     setImageUrl(url);
-  //   });
-  // }, []);
-
-  // useEffect(() => {
-  //   imageRef
-  //     .getDownloadURL()
-  //     .then((url) => {
-  //       setImageUrl(url);
-  //     })
-  //     .catch((e) => console.log("Errors while downloading => ", e));
-  // }, []);
-
-  // console.log(username);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#f2f2f2" }}>
       <ScrollView
@@ -179,32 +117,6 @@ const ProfileScreen = ({ route, navigation }) => {
     </SafeAreaView>
   );
 };
-
-// const SettingsStackScreen = ({ route, navigation }) => {
-//   return (
-//     <SafeAreaView style={{ flex: 1 }}>
-//       <View style={{ flex: 1, padding: 16 }}>
-//         <View
-//           style={{
-//             flex: 1,
-//             alignItems: "center",
-//             justifyContent: "center",
-//           }}
-//         >
-//           <Text
-//             style={{
-//               fontSize: 25,
-//               textAlign: "center",
-//               marginBottom: 16,
-//             }}
-//           >
-//             You are on Settings Screen.
-//           </Text>
-//         </View>
-//       </View>
-//     </SafeAreaView>
-//   );
-// };
 
 export default ProfileScreen;
 

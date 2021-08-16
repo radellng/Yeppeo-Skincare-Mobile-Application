@@ -46,29 +46,13 @@ const CreatePostScreen = ({ route, navigation }) => {
       .catch((e) => console.log("Errors while downloading => ", e));
   }, []);
 
-  // useEffect(() => {
-  //   const fetchImages = async () => {
-  //     let result = await storageRef.listAll();
-  //     let urlPromises = result.items.map((imageRef) =>
-  //       imageRef.getDownloadURL()
-  //     );
-
-  //     return Promise.all(urlPromises);
-  //   };
-
-  //   const loadImages = async () => {
-  //     const urls = await fetchImages();
-  //     setImageUrl(urls[0]);
-  //   };
-  //   loadImages();
-  // }, []);
-
   // Upload Image capability
   useEffect(() => {
     async () => {
       if (Platform.OS !== "web") {
-        const { status } =
-          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        const {
+          status,
+        } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== "granted") {
           alert("Sorry, we need camera roll permissions to make this work!");
         }
@@ -115,27 +99,6 @@ const CreatePostScreen = ({ route, navigation }) => {
       throw error;
     });
     return url;
-    // snapshot.on(
-    //   Firebase.storage.TaskEvent.STATE_CHANGED,
-    //   () => {
-    //     setUploading(true);
-    //   },
-    //   (error) => {
-    //     setUploading(false);
-    //     console.log(error);
-    //     blob.close();
-    //     return;
-    //   },
-    //   () => {
-    //     snapshot.snapshot.ref.getDownloadURL().then((url) => {
-    //       setUploading(false);
-    //       console.log("download url : ", url);
-    //       setUploadedImageUrl(url);
-    //       blob.close();
-    //       return url;
-    //     });
-    //   }
-    // );
   };
 
   async function submitPost(title, text) {
@@ -158,26 +121,6 @@ const CreatePostScreen = ({ route, navigation }) => {
 
   return (
     <ScrollView style={{ flex: 1, marginTop: 30 }}>
-      {/* ability to add image in the future */}
-      {/* <View>
-        {this.state.image ? (
-          <Image
-            source={this.state.image}
-            style={{ width: "100%", height: 300 }}
-          />
-        ) : (
-          <Button
-            onPress={this.selectImage}
-            style={{
-              alignItems: "center",
-              padding: 10,
-              margin: 30,
-            }}
-          >
-            Add an image
-          </Button>
-        )}
-      </View> */}
       <View style={{ alignItems: "center" }}>
         <Text style={{ fontSize: 20 }}>What's on your mind?</Text>
         <TextInput

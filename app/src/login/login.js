@@ -49,9 +49,6 @@ export default class LoginScreen extends Component {
       </KeyboardAvoidingView>
     );
   }
-  // onLoginPress() {
-  //   console.log("login button pressed");
-  // }
 
   onSignupPress() {
     console.log("signup button pressed");

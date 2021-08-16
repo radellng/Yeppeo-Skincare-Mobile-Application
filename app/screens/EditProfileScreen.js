@@ -62,42 +62,12 @@ const EditProfileScreen = ({ route, navigation }) => {
       .catch((e) => console.log("Errors while downloading => ", e));
   }, []);
 
-  // useEffect(() => {
-  //   const fetchImages = async () => {
-  //     let result = await storageRef.listAll();
-  //     let urlPromises = result.items.map((imageRef) =>
-  //       imageRef.getDownloadURL()
-  //     );
-
-  //     return Promise.all(urlPromises);
-  //   };
-
-  //   const loadImages = async () => {
-  //     const urls = await fetchImages();
-  //     setImageUrl(urls[0]);
-  //   };
-  //   loadImages();
-  // }, [imageUrl]);
-
-  // useEffect(() => {
-  //   const loadImages = async () => {
-  //     let url = await imageRef.getDownloadURL();
-  //     setImageUrl(url);
-  //   };
-  //   loadImages();
-  // }, [imageUrl]);
-
-  // useEffect(() => {
-  //   imageRef.getDownloadURL().then((url) => {
-  //     setImageUrl(url);
-  //   });
-  // }, []);
-
   useEffect(() => {
     (async () => {
       if (Platform.OS !== "web") {
-        const { status } =
-          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        const {
+          status,
+        } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== "granted") {
           alert("Sorry, we need camera roll permissions to make this work!");
         }
@@ -146,27 +116,6 @@ const EditProfileScreen = ({ route, navigation }) => {
       throw error;
     });
     return url;
-
-    // snapshot.on(
-    //   Firebase.storage.TaskEvent.STATE_CHANGED,
-    //   () => {
-    //     setUploading(true);
-    //   },
-    //   (error) => {
-    //     setUploading(false);
-    //     console.log(error);
-    //     blob.close();
-    //     return;
-    //   },
-    //   () => {
-    //     snapshot.snapshot.ref.getDownloadURL().then((url) => {
-    //       setUploading(false);
-    //       console.log("download url : ", url);
-    //       blob.close();
-    //       return url;
-    //     });
-    //   }
-    // );
   };
 
   async function updateInfo() {
@@ -186,50 +135,6 @@ const EditProfileScreen = ({ route, navigation }) => {
         console.log("Information updated");
       });
   }
-  // function updateFirstName(firstName) {
-  //   Firebase.firestore()
-  //     .collection("Users")
-  //     .doc(String(user.uid))
-  //     .update({
-  //       firstName: firstName,
-  //     })
-  //     .then((ref) => {
-  //       console.log("First name updated");
-  //     });
-  // }
-  // function updateLastName(lastName) {
-  //   Firebase.firestore()
-  //     .collection("Users")
-  //     .doc(String(user.uid))
-  //     .update({
-  //       lastName: lastName,
-  //     })
-  //     .then((ref) => {
-  //       console.log("Last name updated");
-  //     });
-  // }
-  // function updateGender(gender) {
-  //   Firebase.firestore()
-  //     .collection("Users")
-  //     .doc(String(user.uid))
-  //     .update({
-  //       gender: gender,
-  //     })
-  //     .then((ref) => {
-  //       console.log("Gender updated");
-  //     });
-  // }
-  // function updateAge(age) {
-  //   Firebase.firestore()
-  //     .collection("Users")
-  //     .doc(String(user.uid))
-  //     .update({
-  //       age: age,
-  //     })
-  //     .then((ref) => {
-  //       console.log("Age updated");
-  //     });
-  // }
 
   console.log("Edit Profile page loaded");
 
@@ -339,14 +244,6 @@ const EditProfileScreen = ({ route, navigation }) => {
 
         <View style={styles.action}>
           <Ionicons name="ios-clipboard-outline" color="#333333" size={20} />
-          {/* <RNPickerSelect
-            onValueChange={(value) => console.log(value)}
-            items={[
-              { label: "Football", value: "football" },
-              { label: "Baseball", value: "baseball" },
-              { label: "Hockey", value: "hockey" },
-            ]}
-          /> */}
           <TextInput
             placeholder={age == "" ? "Age" : age}
             blurOnSubmit
@@ -358,36 +255,6 @@ const EditProfileScreen = ({ route, navigation }) => {
             style={styles.textInput}
           />
         </View>
-
-        {/* <View style={styles.action}>
-          <FontAwesome name="globe" color="#333333" size={20} />
-          <TextInput
-            placeholder="Climate of Home"
-            placeholderTextColor="#666666"
-            autoCorrect={false}
-            style={styles.textInput}
-          />
-        </View>
-
-        <View style={styles.action}>
-          <FontAwesome name="info" color="#333333" size={20} />
-          <TextInput
-            placeholder="Facial SkinType"
-            placeholderTextColor="#666666"
-            autoCorrect={false}
-            style={styles.textInput}
-          />
-        </View> */}
-
-        {/* <View style={styles.action}>
-          <FontAwesome name="info" color="#333333" size={20} />
-          <TextInput
-            placeholder="Do you have sensitive skin?"
-            placeholderTextColor="#666666"
-            autoCorrect={false}
-            style={styles.textInput}
-          />
-        </View> */}
       </View>
       <TouchableOpacity
         style={styles.userBtn}

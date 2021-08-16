@@ -38,7 +38,6 @@ function HomeScreen() {
 
 const HomeStackScreen = ({ route, navigation }) => {
   var user = Firebase.auth().currentUser;
-  // console.log(user.uid);
   var storageRef = Firebase.storage().ref("images/" + String(user.uid) + "/");
   var [imageUrl, setImageUrl] = useState([]);
   var [username, setUsername] = useState("");
@@ -159,14 +158,6 @@ const HomeStackScreen = ({ route, navigation }) => {
               alignItems: "center",
             }}
           >
-            {/* {imageUrl.reverse().forEach((url, index) => (
-              <Image
-                key={index}
-                style={{ height: 200, width: 200, top: 20 }}
-                source={{ uri: url }}
-              />
-            ))} */}
-
             {imageUrl.reverse().map((url, index) => (
               <View
                 key={index}

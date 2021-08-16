@@ -15,8 +15,6 @@ import {
 import Firebase from "firebase";
 import Entypo from "react-native-vector-icons/Entypo";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-// import { ScrollView } from "react-native-gesture-handler";
-// import { Text, Avatar, withStyles, List } from "react-native-ui-kitten";
 
 const ForumScreen = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
@@ -66,21 +64,6 @@ const ForumScreen = ({ route, navigation }) => {
   }, []);
 
   console.log("Forum page");
-
-  // useEffect(() => {
-  //   // Hook to handle the initial fetching of posts
-  //   Firebase.firestore()
-  //     .collection("Posts")
-  //     .orderBy("createdAt", "desc")
-  //     .onSnapshot((querySnapshot) => {
-  //       let data = querySnapshot.docs.map((doc) => ({
-  //         id: doc.id,
-  //         ...doc.data(),
-  //       }));
-
-  //       setPosts(data);
-  //     });
-  // }, [posts]);
 
   function upvote(postTime) {
     Firebase.firestore()

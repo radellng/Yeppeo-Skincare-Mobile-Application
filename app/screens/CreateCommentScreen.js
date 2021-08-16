@@ -39,23 +39,6 @@ const CreateCommentScreen = ({ route, navigation }) => {
       .catch((e) => console.log("Errors while downloading => ", e));
   }, []);
 
-  // useEffect(() => {
-  //   const fetchImages = async () => {
-  //     let result = await storageRef.listAll();
-  //     let urlPromises = result.items.map((imageRef) =>
-  //       imageRef.getDownloadURL()
-  //     );
-
-  //     return Promise.all(urlPromises);
-  //   };
-
-  //   const loadImages = async () => {
-  //     const urls = await fetchImages();
-  //     setImageUrl(urls[0]);
-  //   };
-  //   loadImages();
-  // }, []);
-
   function submitPost(text) {
     Firebase.firestore()
       .collection("Posts")
@@ -77,26 +60,6 @@ const CreateCommentScreen = ({ route, navigation }) => {
 
   return (
     <View style={{ flex: 1, marginTop: 30 }}>
-      {/* ability to add image in the future */}
-      {/* <View>
-        {this.state.image ? (
-          <Image
-            source={this.state.image}
-            style={{ width: "100%", height: 300 }}
-          />
-        ) : (
-          <Button
-            onPress={this.selectImage}
-            style={{
-              alignItems: "center",
-              padding: 10,
-              margin: 30,
-            }}
-          >
-            Add an image
-          </Button>
-        )}
-      </View> */}
       <View style={{ alignItems: "center" }}>
         <Text style={{ fontSize: 20 }}>What's on your mind?</Text>
         <TextInput
