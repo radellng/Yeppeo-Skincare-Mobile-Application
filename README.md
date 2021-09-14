@@ -4,8 +4,8 @@ Orbital (a.k.a., CP2106: Independent Software Development Project) is the School
 
 Please refer to https://orbital.comp.nus.edu.sg/ for more information regarding NUS Orbital project.
 
-Team Name: koreanJett
-App Name: Yeppeo
+Team Name: koreanJett \
+App Name: Yeppeo \
 Developed in React Native
 
 Please refer to the document titled 'Yeppeo Technical Documentation' for a detailed explanation of the project.
