@@ -8,4 +8,4 @@ Team Name: koreanJett \
 App Name: Yeppeo \
 Developed in React Native
 
-Please refer to the document titled 'Yeppeo Technical Documentation' for a detailed explanation of the project.
+Please refer to the pdf titled 'Yeppeo Technical Documentation.pdf' for a detailed explanation of the project.
