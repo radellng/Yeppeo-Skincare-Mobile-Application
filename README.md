@@ -6,6 +6,7 @@ Please refer to https://orbital.comp.nus.edu.sg/ for more information regarding 
 
 Team Name: koreanJett \
 App Name: Yeppeo \
-Developed in React Native
+Project Poster: https://nusskylab-dev.comp.nus.edu.sg/posters/2021/2492.jpg \
+Project Video/Walkthrough: https://www.youtube.com/watch?v=j9nK-sg8CNM&ab_channel=NUSOrbital
 
 Please refer to the pdf titled 'Yeppeo Technical Documentation.pdf' for a detailed explanation of the project.
