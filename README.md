@@ -6,6 +6,7 @@ Please refer to https://orbital.comp.nus.edu.sg/ for more information regarding 
 
 Team Name: koreanJett \
 App Name: Yeppeo \
+Project Documentation: https://drive.google.com/file/d/1-Co_Gv5N0ycIr6fuT-wnYzbtU24TekSk/view?usp=sharing \
 Project Poster: https://nusskylab-dev.comp.nus.edu.sg/posters/2021/2492.jpg \
 Project Video/Walkthrough: https://www.youtube.com/watch?v=j9nK-sg8CNM&ab_channel=NUSOrbital
 
